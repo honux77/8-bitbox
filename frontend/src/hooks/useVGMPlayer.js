@@ -375,23 +375,12 @@ export function useVGMPlayer() {
     if (isPlaying) {
       pause()
     } else if (currentTrack) {
-      // Resume
-      if (contextRef.current && nodeRef.current) {
-        if (analyserRef.current) {
-          try {
-            nodeRef.current.disconnect()
-          } catch (e) { }
-          nodeRef.current.connect(analyserRef.current)
-          analyserRef.current.connect(contextRef.current.destination)
-        } else {
-          nodeRef.current.connect(contextRef.current.destination)
-        }
-        setIsPlaying(true)
-      }
+      // Resume by replaying current track (more reliable after screen off/on)
+      play(currentTrackIndex)
     } else {
       play(0)
     }
-  }, [isPlaying, currentTrack, pause, play])
+  }, [isPlaying, currentTrack, currentTrackIndex, pause, play])
 
   const nextTrack = useCallback(() => {
     // persist latest function reference to avoid closure issues when called from events
@@ -441,8 +430,27 @@ export function useVGMPlayer() {
     };
 
     const handleVisibilityChange = async () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === 'hidden') {
+        // Auto-pause when screen turns off
+        if (nodeRef.current) {
+          try {
+            nodeRef.current.disconnect();
+          } catch (e) { }
+        }
+        setIsPlaying(false);
+        console.log('Paused due to visibility change');
+      } else if (document.visibilityState === 'visible') {
         await requestWakeLock();
+
+        // Resume AudioContext if suspended (required for playback to work again)
+        if (contextRef.current && contextRef.current.state === 'suspended') {
+          try {
+            await contextRef.current.resume();
+            console.log('AudioContext resumed');
+          } catch (err) {
+            console.error('AudioContext resume failed:', err);
+          }
+        }
       }
     };
 
