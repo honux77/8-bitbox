@@ -1,7 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useVGMPlayer } from './hooks/useVGMPlayer'
 import { Player } from './components/Player'
 import './App.css'
+
+// URL hash utilities
+const encodeHashParam = (str) => encodeURIComponent(str).replace(/%20/g, '+')
+const decodeHashParam = (str) => decodeURIComponent(str.replace(/\+/g, '%20'))
+
+const parseHash = () => {
+  const hash = window.location.hash.slice(1) // remove #
+  if (!hash) return null
+  const slashIndex = hash.indexOf('/')
+  if (slashIndex === -1) {
+    return { gameId: decodeHashParam(hash), trackName: null }
+  }
+  return {
+    gameId: decodeHashParam(hash.slice(0, slashIndex)),
+    trackName: decodeHashParam(hash.slice(slashIndex + 1))
+  }
+}
+
+const setHash = (gameId, trackName) => {
+  if (!gameId) {
+    history.replaceState(null, '', window.location.pathname)
+    return
+  }
+  const hash = trackName
+    ? `#${encodeHashParam(gameId)}/${encodeHashParam(trackName)}`
+    : `#${encodeHashParam(gameId)}`
+  history.replaceState(null, '', hash)
+}
 
 function App() {
   const [screen, setScreen] = useState('loading') // loading, start, select, player
@@ -10,6 +38,7 @@ function App() {
   const [loadingGame, setLoadingGame] = useState(false)
   const [error, setError] = useState(null)
   const [installPrompt, setInstallPrompt] = useState(null)
+  const initialHashHandled = useRef(false)
 
   const player = useVGMPlayer()
 
@@ -23,13 +52,41 @@ function App() {
     return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
+  // Handle initial hash navigation (play from URL hash)
+  const handleHashNavigation = useCallback(async (gamesData, hashInfo) => {
+    if (!hashInfo || !hashInfo.gameId) return false
+
+    const game = gamesData.find(g => g.id === hashInfo.gameId)
+    if (!game) return false
+
+    setSelectedGame(game)
+    setLoadingGame(true)
+    setScreen('player')
+
+    const tracks = await player.loadZip(`/music/${game.zipFile}`)
+    setLoadingGame(false)
+
+    if (tracks && tracks.length > 0) {
+      let trackIndex = 0
+      if (hashInfo.trackName) {
+        const foundIndex = tracks.findIndex(t => t.name === hashInfo.trackName)
+        if (foundIndex !== -1) trackIndex = foundIndex
+      }
+      setTimeout(() => player.play(trackIndex, tracks), 100)
+    }
+    return true
+  }, [player])
+
   // Load manifest
   useEffect(() => {
     fetch('/music/manifest.json')
       .then(res => res.json())
       .then(data => {
         setGames(data.games)
-        setTimeout(() => setScreen('select'), 500)
+        // Don't handle hash here - wait for player to be ready
+        if (!parseHash()) {
+          setTimeout(() => setScreen('select'), 500)
+        }
       })
       .catch(err => {
         console.error('Failed to load manifest:', err)
@@ -37,6 +94,19 @@ function App() {
         setScreen('select')
       })
   }, [])
+
+  // Handle hash navigation when player is ready and games are loaded
+  useEffect(() => {
+    if (!player.isReady || games.length === 0 || initialHashHandled.current) return
+
+    const hashInfo = parseHash()
+    if (hashInfo && hashInfo.gameId) {
+      initialHashHandled.current = true
+      handleHashNavigation(games, hashInfo)
+    } else {
+      initialHashHandled.current = true
+    }
+  }, [player.isReady, games, handleHashNavigation])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -61,6 +131,7 @@ function App() {
           player.stop()
           setScreen('select')
           setSelectedGame(null)
+          setHash(null, null)
           break
       }
     }
@@ -84,15 +155,37 @@ function App() {
 
     // Auto play first track with loaded tracks
     if (tracks && tracks.length > 0) {
-      setTimeout(() => player.play(0, tracks), 100)
+      setTimeout(() => {
+        player.play(0, tracks)
+        setHash(game.id, tracks[0].name)
+      }, 100)
     }
   }
+
+  // Wrapper for track selection that updates hash
+  const handleSelectTrack = useCallback((trackIndex) => {
+    player.play(trackIndex)
+    if (selectedGame && player.trackList[trackIndex]) {
+      setHash(selectedGame.id, player.trackList[trackIndex].name)
+    }
+  }, [player, selectedGame])
 
   const handleBack = () => {
     player.stop()
     setScreen('select')
     setSelectedGame(null)
+    setHash(null, null) // Clear hash
   }
+
+  // Update hash when track changes (next/prev)
+  useEffect(() => {
+    if (selectedGame && player.trackList.length > 0 && player.currentTrackIndex >= 0) {
+      const currentTrack = player.trackList[player.currentTrackIndex]
+      if (currentTrack) {
+        setHash(selectedGame.id, currentTrack.name)
+      }
+    }
+  }, [player.currentTrackIndex, player.trackList, selectedGame])
 
   const handleInstall = async () => {
     if (!installPrompt) return
@@ -263,7 +356,7 @@ function App() {
                 onNext={player.nextTrack}
                 onPrev={player.prevTrack}
                 onStop={player.stop}
-                onSelectTrack={player.play}
+                onSelectTrack={handleSelectTrack}
                 frequencyData={player.frequencyData}
               />
             )}
