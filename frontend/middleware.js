@@ -31,11 +31,13 @@ export default async function middleware(request) {
       let title = `${game.title} - 9 Player`
       let description = `${game.system} | ${game.trackCount} tracks`
 
-      // Use cover image if available, otherwise use default og-image
+      // Use OG image if available, fallback to cover, then default
       const baseUrl = 'https://9-player.vercel.app'
-      let imageUrl = game.coverImage
-        ? `${baseUrl}/music/${game.coverImage}`
-        : `${baseUrl}/icons/og-image.png`
+      let imageUrl = game.ogImage
+        ? `${baseUrl}/music/${game.ogImage}`
+        : game.coverImage
+          ? `${baseUrl}/music/${game.coverImage}`
+          : `${baseUrl}/icons/og-image.png`
 
       if (trackName) {
         const track = game.tracks?.find(t => t.name === trackName)

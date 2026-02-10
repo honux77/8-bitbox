@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import JSZip from 'jszip'
+import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -9,7 +10,13 @@ const __dirname = path.dirname(__filename)
 const DIST_DIR = path.join(__dirname, '../../vgz')
 const OUTPUT_DIR = path.join(__dirname, '../public/music')
 const COVERS_DIR = path.join(OUTPUT_DIR, 'covers')
+const OG_COVERS_DIR = path.join(OUTPUT_DIR, 'og-covers')
 const MANIFEST_PATH = path.join(OUTPUT_DIR, 'manifest.json')
+
+// OG image dimensions (Facebook/Twitter recommended)
+const OG_WIDTH = 1200
+const OG_HEIGHT = 630
+const OG_BG_COLOR = '#1a1a2e' // Match app background
 
 async function parseVGMTitle(buffer) {
   // VGM file header parsing for GD3 tag
@@ -127,18 +134,65 @@ async function processZipFile(zipPath, gameId) {
 
   // Save cover image if found
   let coverImagePath = null
+  let ogImagePath = null
+
   if (coverImageData && coverImageExt) {
     const coverFileName = `${gameId}${coverImageExt}`
     const coverFullPath = path.join(COVERS_DIR, coverFileName)
     fs.writeFileSync(coverFullPath, coverImageData)
     coverImagePath = `covers/${coverFileName}`
     console.log(`  -> Extracted cover image: ${coverFileName}`)
+
+    // Generate OG image (1200x630) with cover centered on dark background
+    try {
+      const ogFileName = `${gameId}.png`
+      const ogFullPath = path.join(OG_COVERS_DIR, ogFileName)
+
+      // Get original image metadata
+      const metadata = await sharp(coverImageData).metadata()
+      const origWidth = metadata.width || 400
+      const origHeight = metadata.height || 400
+
+      // Calculate resize dimensions to fit within OG image (with padding)
+      const maxCoverHeight = OG_HEIGHT - 80 // 40px padding top/bottom
+      const maxCoverWidth = OG_WIDTH - 100 // 50px padding left/right
+      const scale = Math.min(maxCoverWidth / origWidth, maxCoverHeight / origHeight, 2) // Max 2x upscale
+      const resizedWidth = Math.round(origWidth * scale)
+      const resizedHeight = Math.round(origHeight * scale)
+
+      // Create OG image with cover centered
+      await sharp({
+        create: {
+          width: OG_WIDTH,
+          height: OG_HEIGHT,
+          channels: 4,
+          background: OG_BG_COLOR
+        }
+      })
+        .composite([
+          {
+            input: await sharp(coverImageData)
+              .resize(resizedWidth, resizedHeight, { fit: 'inside' })
+              .png()
+              .toBuffer(),
+            gravity: 'center'
+          }
+        ])
+        .png()
+        .toFile(ogFullPath)
+
+      ogImagePath = `og-covers/${ogFileName}`
+      console.log(`  -> Generated OG image: ${ogFileName} (${resizedWidth}x${resizedHeight})`)
+    } catch (e) {
+      console.log(`  -> Failed to generate OG image: ${e.message}`)
+    }
   }
 
   return {
     gameInfo,
     tracks,
-    coverImage: coverImagePath
+    coverImage: coverImagePath,
+    ogImage: ogImagePath
   }
 }
 
@@ -151,6 +205,9 @@ async function main() {
   }
   if (!fs.existsSync(COVERS_DIR)) {
     fs.mkdirSync(COVERS_DIR, { recursive: true })
+  }
+  if (!fs.existsSync(OG_COVERS_DIR)) {
+    fs.mkdirSync(OG_COVERS_DIR, { recursive: true })
   }
 
   const files = fs.readdirSync(DIST_DIR).filter(f => f.endsWith('.zip'))
@@ -167,7 +224,7 @@ async function main() {
     const gameId = path.basename(file, '.zip').replace(/[^a-zA-Z0-9]/g, '_')
 
     try {
-      const { gameInfo, tracks, coverImage } = await processZipFile(zipPath, gameId)
+      const { gameInfo, tracks, coverImage, ogImage } = await processZipFile(zipPath, gameId)
 
       const game = {
         id: gameId,
@@ -177,6 +234,7 @@ async function main() {
         system: gameInfo?.system || 'Unknown',
         author: gameInfo?.author || '',
         coverImage: coverImage,
+        ogImage: ogImage,
         trackCount: tracks.length,
         tracks: tracks
       }
