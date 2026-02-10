@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-10T13:34:04.566Z",
+  "generatedAt": "2026-02-10T14:10:10.905Z",
   "games": [
     {
       "id": "Daikoukai_Jidai__Sharp_X68000_",
@@ -2517,6 +2517,114 @@
           "filename": "24 - Unknown Jingle.vgz",
           "name": "Unknown Jingle",
           "nameJp": ""
+        }
+      ]
+    },
+    {
+      "id": "Sonic_the_Hedgehog__Mega_Drive__Genesis_",
+      "zipFile": "Sonic the Hedgehog (Mega Drive, Genesis).zip",
+      "title": "Sonic the Hedgehog",
+      "titleJp": "ソニック・ザ・ヘッジホッグ",
+      "system": "Sega Mega Drive",
+      "author": "Masato Nakamura",
+      "coverImage": "covers/Sonic_the_Hedgehog__Mega_Drive__Genesis_.png",
+      "ogImage": "og-covers/Sonic_the_Hedgehog__Mega_Drive__Genesis_.png",
+      "trackCount": 19,
+      "tracks": [
+        {
+          "filename": "01 - Title Theme.vgz",
+          "name": "Title Theme",
+          "nameJp": "タイトル"
+        },
+        {
+          "filename": "02 - Green Hill Zone.vgz",
+          "name": "Green Hill Zone",
+          "nameJp": "グリーンヒルゾーン"
+        },
+        {
+          "filename": "03 - Marble Zone.vgz",
+          "name": "Marble Zone",
+          "nameJp": "マーブルゾーン"
+        },
+        {
+          "filename": "04 - Spring Yard Zone.vgz",
+          "name": "Spring Yard Zone",
+          "nameJp": "スプリングヤードゾーン"
+        },
+        {
+          "filename": "05 - Labyrinth Zone.vgz",
+          "name": "Labyrinth Zone",
+          "nameJp": "ラビリンスゾーン"
+        },
+        {
+          "filename": "06 - Star Light Zone.vgz",
+          "name": "Star Light Zone",
+          "nameJp": "スターライトゾーン"
+        },
+        {
+          "filename": "07 - Scrap Brain Zone.vgz",
+          "name": "Scrap Brain Zone",
+          "nameJp": "スクラップブレインゾーン"
+        },
+        {
+          "filename": "08 - Special Stage.vgz",
+          "name": "Special Stage",
+          "nameJp": "スペシャルステージ"
+        },
+        {
+          "filename": "09 - Robotnik.vgz",
+          "name": "Robotnik",
+          "nameJp": ""
+        },
+        {
+          "filename": "10 - Final Zone.vgz",
+          "name": "Final Zone",
+          "nameJp": "ファイナルゾーン"
+        },
+        {
+          "filename": "11 - Stage Clear.vgz",
+          "name": "Stage Clear",
+          "nameJp": ""
+        },
+        {
+          "filename": "12 - Ending Theme.vgz",
+          "name": "Ending Theme",
+          "nameJp": ""
+        },
+        {
+          "filename": "13 - Staff Roll.vgz",
+          "name": "Staff Roll",
+          "nameJp": ""
+        },
+        {
+          "filename": "14 - Invincibility.vgz",
+          "name": "Invincibility",
+          "nameJp": "無敵"
+        },
+        {
+          "filename": "15 - 1-up.vgz",
+          "name": "1-up",
+          "nameJp": "1-up"
+        },
+        {
+          "filename": "16 - Chaos Emerald.vgz",
+          "name": "Chaos Emerald",
+          "nameJp": ""
+        },
+        {
+          "filename": "17 - Drowning.vgz",
+          "name": "Drowning",
+          "nameJp": ""
+        },
+        {
+          "filename": "18 - Continue.vgz",
+          "name": "Continue?",
+          "nameJp": "コンティニュー"
+        },
+        {
+          "filename": "19 - Game Over.vgz",
+          "name": "Game Over",
+          "nameJp": "ゲームオーバー"
         }
       ]
     },

@@ -34,7 +34,9 @@
       "Bash(sips:*)",
       "Bash(git rebase:*)",
       "Bash(GIT_EDITOR=true git rebase:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(tree:*)",
+      "Bash(pushd:*)"
     ]
   }
 }
