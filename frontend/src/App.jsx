@@ -86,6 +86,7 @@ function App() {
   const [installPrompt, setInstallPrompt] = useState(null)
   const [favorites, setFavorites] = useState(loadFavorites)
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(loadFilter)
+  const [showHelp, setShowHelp] = useState(false)
   const initialHashHandled = useRef(false)
 
   const player = useVGMPlayer()
@@ -285,11 +286,16 @@ function App() {
         />
         <div className="title-row">
           <h1 className="title">NINE-PLAYER</h1>
-          {installPrompt && (
-            <button className="install-button" onClick={handleInstall}>
-              INSTALL
+          <div className="header-buttons">
+            {installPrompt && (
+              <button className="install-button" onClick={handleInstall}>
+                INSTALL
+              </button>
+            )}
+            <button className="help-button" onClick={() => setShowHelp(true)}>
+              ?
             </button>
-          )}
+          </div>
         </div>
         <p className="subtitle">Honux's Video Game Music Archive <span className="version">v{__APP_VERSION__}</span></p>
       </header>
@@ -471,6 +477,45 @@ function App() {
           </>
         )}
       </main>
+
+      {/* Help Modal */}
+      {showHelp && (
+        <div className="help-overlay" onClick={() => setShowHelp(false)}>
+          <div className="help-modal" onClick={e => e.stopPropagation()}>
+            <button className="help-close" onClick={() => setShowHelp(false)}>X</button>
+            <h2 className="help-title">HELP</h2>
+
+            <div className="help-section">
+              <h3>KEYBOARD SHORTCUTS</h3>
+              <div className="help-shortcuts">
+                <div className="help-key"><span>SPACE</span> Play / Pause</div>
+                <div className="help-key"><span>N</span> Next Track</div>
+                <div className="help-key"><span>P</span> Previous Track</div>
+                <div className="help-key"><span>S</span> Stop</div>
+                <div className="help-key"><span>ESC</span> Back to List</div>
+              </div>
+            </div>
+
+            <div className="help-section">
+              <h3>FEATURES</h3>
+              <ul className="help-features">
+                <li>Click album cover to expand</li>
+                <li>Click star to add favorites</li>
+                <li>Share button copies track URL</li>
+                <li>URL sharing shows preview</li>
+              </ul>
+            </div>
+
+            <div className="help-section">
+              <h3>ABOUT</h3>
+              <p className="help-about">
+                9-Player plays retro video game music (VGM) in your browser.
+                Powered by VGMPlay + Emscripten.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="footer">
         <p className="footer-text">

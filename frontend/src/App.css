@@ -59,6 +59,141 @@
   transform: scale(0.98);
 }
 
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.help-button {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(180deg, #4a4a8a 0%, #2a2a5a 100%);
+  border: 3px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.help-button:hover {
+  background: linear-gradient(180deg, #5a5a9a 0%, #3a3a6a 100%);
+  box-shadow: 0 0 15px rgba(0, 255, 247, 0.4);
+  transform: scale(1.05);
+}
+
+/* Help Modal */
+.help-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.help-modal {
+  background: var(--bg-panel);
+  border: 4px solid var(--accent-cyan);
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 255, 247, 0.3);
+}
+
+.help-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  background: none;
+  border: 2px solid var(--text-secondary);
+  color: var(--text-secondary);
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.help-close:hover {
+  border-color: var(--accent-magenta);
+  color: var(--accent-magenta);
+}
+
+.help-title {
+  font-size: 16px;
+  color: var(--accent-cyan);
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px rgba(0, 255, 247, 0.5);
+}
+
+.help-section {
+  margin-bottom: 20px;
+}
+
+.help-section h3 {
+  font-size: 10px;
+  color: var(--accent-yellow);
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 6px;
+}
+
+.help-shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.help-key {
+  font-size: 8px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.help-key span {
+  background: var(--bg-dark);
+  border: 2px solid var(--border-color);
+  color: var(--accent-cyan);
+  padding: 4px 8px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.help-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.help-features li {
+  font-size: 8px;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.help-features li:last-child {
+  border-bottom: none;
+}
+
+.help-about {
+  font-size: 8px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
 .title-row {
   display: flex;
   align-items: center;
