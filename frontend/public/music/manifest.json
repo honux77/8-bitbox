@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-10T12:39:48.931Z",
+  "generatedAt": "2026-02-10T13:34:04.566Z",
   "games": [
     {
       "id": "Daikoukai_Jidai__Sharp_X68000_",
@@ -9,6 +9,7 @@
       "system": "Sharp X68000",
       "author": "Yoko Kanno",
       "coverImage": "covers/Daikoukai_Jidai__Sharp_X68000_.png",
+      "ogImage": "og-covers/Daikoukai_Jidai__Sharp_X68000_.png",
       "trackCount": 22,
       "tracks": [
         {
@@ -131,6 +132,7 @@
       "system": "FM Towns",
       "author": "Yoko Kanno",
       "coverImage": "covers/Daikoukai_Jidai_II__FM_Towns_.png",
+      "ogImage": "og-covers/Daikoukai_Jidai_II__FM_Towns_.png",
       "trackCount": 22,
       "tracks": [
         {
@@ -253,6 +255,7 @@
       "system": "IBM PC/AT",
       "author": "Robert Prince",
       "coverImage": "covers/Doom__PC_.png",
+      "ogImage": "og-covers/Doom__PC_.png",
       "trackCount": 23,
       "tracks": [
         {
@@ -380,6 +383,7 @@
       "system": "FM Towns",
       "author": "Manabu Kunieda",
       "coverImage": "covers/Doukyusei__FM_Towns_.png",
+      "ogImage": "og-covers/Doukyusei__FM_Towns_.png",
       "trackCount": 49,
       "tracks": [
         {
@@ -637,6 +641,7 @@
       "system": "Nintendo Entertainment System",
       "author": "Koichi Sugiyama",
       "coverImage": "covers/Dragon_Warrior_IV__NES_.png",
+      "ogImage": "og-covers/Dragon_Warrior_IV__NES_.png",
       "trackCount": 47,
       "tracks": [
         {
@@ -884,6 +889,7 @@
       "system": "MSX2",
       "author": "Yoshinori Sasaki, Motoaki Furukawa, Fumio Miyashita, Iku Mizutani",
       "coverImage": "covers/Hinotori___Ho_o_Hen__MSX2_.png",
+      "ogImage": "og-covers/Hinotori___Ho_o_Hen__MSX2_.png",
       "trackCount": 11,
       "tracks": [
         {
@@ -951,6 +957,7 @@
       "system": "Nintendo Entertainment System",
       "author": "Takashi Tateishi, Manami Matsumae",
       "coverImage": "covers/Megaman_2.png",
+      "ogImage": "og-covers/Megaman_2.png",
       "trackCount": 26,
       "tracks": [
         {
@@ -1093,6 +1100,7 @@
       "system": "MSX2",
       "author": "Konami Kukeiha Club",
       "coverImage": "covers/Metal_Gear_2___Solid_Snake__MSX2_.png",
+      "ogImage": "og-covers/Metal_Gear_2___Solid_Snake__MSX2_.png",
       "trackCount": 48,
       "tracks": [
         {
@@ -1345,6 +1353,7 @@
       "system": "IBM PC/AT",
       "author": "Michael Z. Land, Peter McConnell, Clint Bajakian, Robin Goldstein, J. Anthony White",
       "coverImage": "covers/Monkey_Island_2___LeChuck_s_Revenge__IBM_PC_AT_.png",
+      "ogImage": "og-covers/Monkey_Island_2___LeChuck_s_Revenge__IBM_PC_AT_.png",
       "trackCount": 104,
       "tracks": [
         {
@@ -1877,6 +1886,7 @@
       "system": "Family Computer",
       "author": "Hirokazu Tanaka",
       "coverImage": "covers/Mother.png",
+      "ogImage": "og-covers/Mother.png",
       "trackCount": 40,
       "tracks": [
         {
@@ -2089,6 +2099,7 @@
       "system": "MSX",
       "author": "Masahiro Ikariko, Motoaki Furukawa",
       "coverImage": "covers/Nemesis_2__MSX_.png",
+      "ogImage": "og-covers/Nemesis_2__MSX_.png",
       "trackCount": 17,
       "tracks": [
         {
@@ -2186,6 +2197,7 @@
       "system": "IBM PC/AT",
       "author": "Masahiro Kajihara",
       "coverImage": "covers/Princess_Maker_2__PC_.png",
+      "ogImage": "og-covers/Princess_Maker_2__PC_.png",
       "trackCount": 38,
       "tracks": [
         {
@@ -2388,6 +2400,7 @@
       "system": "Sega Genesis",
       "author": "Minoru Mukaiya",
       "coverImage": "covers/Romance_of_the_Three_Kingdoms_III__Mega_Drive__Genesis_.png",
+      "ogImage": "og-covers/Romance_of_the_Three_Kingdoms_III__Mega_Drive__Genesis_.png",
       "trackCount": 23,
       "tracks": [
         {
@@ -2515,6 +2528,7 @@
       "system": "Sega Mega Drive",
       "author": "Masato Nakamura",
       "coverImage": "covers/Sonic_the_Hedgehog_2__Mega_Drive__Genesis_.png",
+      "ogImage": "og-covers/Sonic_the_Hedgehog_2__Mega_Drive__Genesis_.png",
       "trackCount": 31,
       "tracks": [
         {
@@ -2682,6 +2696,7 @@
       "system": "MSX",
       "author": "Kazuhiko Uehara, Kinuyo Yamashita",
       "coverImage": "covers/The_Maze_of_Galious__MSX_.png",
+      "ogImage": "og-covers/The_Maze_of_Galious__MSX_.png",
       "trackCount": 15,
       "tracks": [
         {
@@ -2769,6 +2784,7 @@
       "system": "PC/DOS",
       "author": "Michael Z. Land, Patrick Mundy",
       "coverImage": "covers/The_Secret_of_Monkey_Island__IBM_PC_AT_.png",
+      "ogImage": "og-covers/The_Secret_of_Monkey_Island__IBM_PC_AT_.png",
       "trackCount": 17,
       "tracks": [
         {
@@ -2866,6 +2882,7 @@
       "system": "Sharp X68000",
       "author": "Mieko Ishikawa",
       "coverImage": "covers/Ys_III___Wanderers_from_Ys__Sharp_X68000_.png",
+      "ogImage": "og-covers/Ys_III___Wanderers_from_Ys__Sharp_X68000_.png",
       "trackCount": 32,
       "tracks": [
         {
@@ -3038,6 +3055,7 @@
       "system": "IBM PC/AT / DOS",
       "author": "Yuzo Koshiro, Goo-Hee Kwon, Dong-Il Kwak, Ki-Sung Park, Se-Yong Kim, Myung-Jin Ahn, Seung-Hwan Ro",
       "coverImage": "covers/Ys_II_Special__IBM_PC_AT_.png",
+      "ogImage": "og-covers/Ys_II_Special__IBM_PC_AT_.png",
       "trackCount": 64,
       "tracks": [
         {
@@ -3370,6 +3388,7 @@
       "system": "IBM PC/AT / DOS",
       "author": "Masakuni Mitsuhashi, Hibiki Godai, Mecano Associates",
       "coverImage": "covers/Zeliard__IBM_PC_AT__OPL_.png",
+      "ogImage": "og-covers/Zeliard__IBM_PC_AT__OPL_.png",
       "trackCount": 17,
       "tracks": [
         {
