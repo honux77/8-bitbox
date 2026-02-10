@@ -30,7 +30,12 @@ export default async function middleware(request) {
     if (game) {
       let title = `${game.title} - 9 Player`
       let description = `${game.system} | ${game.trackCount} tracks`
-      let imageUrl = `https://9-player.vercel.app/music/${game.coverImage}`
+
+      // Use cover image if available, otherwise use default og-image
+      const baseUrl = 'https://9-player.vercel.app'
+      let imageUrl = game.coverImage
+        ? `${baseUrl}/music/${game.coverImage}`
+        : `${baseUrl}/icons/og-image.png`
 
       if (trackName) {
         const track = game.tracks?.find(t => t.name === trackName)
@@ -53,12 +58,11 @@ export default async function middleware(request) {
         /<meta property="og:url" content="[^"]*"/,
         `<meta property="og:url" content="${escapeHtml(url.href)}"`
       )
-      if (game.coverImage) {
-        html = html.replace(
-          /<meta property="og:image" content="[^"]*"/,
-          `<meta property="og:image" content="${escapeHtml(imageUrl)}"`
-        )
-      }
+      // Always replace og:image
+      html = html.replace(
+        /<meta property="og:image" content="[^"]*"/,
+        `<meta property="og:image" content="${escapeHtml(imageUrl)}"`
+      )
 
       // Replace Twitter tags
       html = html.replace(
@@ -69,12 +73,11 @@ export default async function middleware(request) {
         /<meta name="twitter:description" content="[^"]*"/,
         `<meta name="twitter:description" content="${escapeHtml(description)}"`
       )
-      if (game.coverImage) {
-        html = html.replace(
-          /<meta name="twitter:image" content="[^"]*"/,
-          `<meta name="twitter:image" content="${escapeHtml(imageUrl)}"`
-        )
-      }
+      // Always replace twitter:image
+      html = html.replace(
+        /<meta name="twitter:image" content="[^"]*"/,
+        `<meta name="twitter:image" content="${escapeHtml(imageUrl)}"`
+      )
 
       // Replace title tag
       html = html.replace(
