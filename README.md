@@ -11,6 +11,21 @@
 - **Responsive Design** - 데스크탑/모바일 반응형 지원
 - **Auto-play** - 트랙 자동 재생 및 다음 곡 넘기기
 - **Keyboard Shortcuts** - 키보드로 빠른 조작
+- **URL Sharing** - 특정 곡을 URL로 직접 공유 가능
+- **Favorites** - 앨범 즐겨찾기 및 필터링 (localStorage 저장)
+- **Time Display** - 경과/남은 시간 실시간 표시
+- **PWA Support** - 앱으로 설치 가능
+
+## URL Sharing
+
+재생 중인 곡의 URL을 공유하면 해당 곡이 바로 재생됩니다.
+
+```
+https://9-player.vercel.app/#GameID/TrackName
+```
+
+- 🔗 버튼으로 현재 곡 URL 복사
+- URL로 접속하면 해당 곡 자동 재생
 
 ## Keyboard Shortcuts
 
@@ -20,12 +35,15 @@
 | `N` | Next Track |
 | `P` | Previous Track |
 | `S` | Stop |
+| `ESC` | Back to Album List |
 
 ## Tech Stack
 
 - **Frontend**: React 19 + Vite
-- **Audio Engine**: VGMPlay (WebAssembly)
+- **Audio Engine**: VGMPlay (WebAssembly/Emscripten)
 - **Styling**: CSS with CSS Variables
+- **PWA**: vite-plugin-pwa
+- **Storage**: localStorage (favorites)
 
 ## Getting Started
 

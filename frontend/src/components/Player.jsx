@@ -30,6 +30,19 @@ export function Player({
   const overlayCanvasRef = useRef(null)
   const [isImageExpanded, setIsImageExpanded] = useState(false)
   const [expandedImageSize, setExpandedImageSize] = useState({ width: 0, height: 0 })
+  const [toastMessage, setToastMessage] = useState(null)
+
+  // Copy current URL to clipboard
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setToastMessage('URL COPIED!')
+      setTimeout(() => setToastMessage(null), 2000)
+    } catch (err) {
+      setToastMessage('COPY FAILED')
+      setTimeout(() => setToastMessage(null), 2000)
+    }
+  }
 
   // Calculate image size to fit screen while maintaining aspect ratio
   const handleImageLoad = (e) => {
@@ -146,7 +159,15 @@ export function Player({
         <button className="control-btn stop-btn" onClick={onStop} title="Stop (S)">
           ⏹
         </button>
+        <button className="control-btn share-btn" onClick={handleShare} title="Share URL">
+          🔗
+        </button>
       </div>
+
+      {/* Toast Message */}
+      {toastMessage && (
+        <div className="toast-message">{toastMessage}</div>
+      )}
 
       {/* Visualizer (Canvas-based frequency spectrum) */}
       <div className="visualizer">

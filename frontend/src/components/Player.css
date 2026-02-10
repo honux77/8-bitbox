@@ -322,6 +322,35 @@
   box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
 }
 
+.share-btn:hover {
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+/* Toast Message */
+.toast-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9);
+  border: 3px solid var(--accent-green);
+  color: var(--accent-green);
+  padding: 16px 32px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  z-index: 1000;
+  animation: toast-fade 2s ease-in-out;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+}
+
+@keyframes toast-fade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
 .visualizer {
   display: flex;
   justify-content: center;
