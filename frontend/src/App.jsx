@@ -441,8 +441,17 @@ function App() {
               </div>
             ) : sortedGames.length === 0 ? (
               <div className="empty-state">
-                <div className="empty-icon">★</div>
-                <p className="empty-text">NO FAVORITES YET<br />CLICK ★ ON ALBUMS TO ADD</p>
+                {showFavoritesOnly && !searchQuery ? (
+                  <>
+                    <div className="empty-icon">★</div>
+                    <p className="empty-text">NO FAVORITES YET<br />CLICK ★ ON ALBUMS TO ADD</p>
+                  </>
+                ) : (
+                  <>
+                    <div className="empty-icon">🔍</div>
+                    <p className="empty-text">NO RESULTS FOUND</p>
+                  </>
+                )}
               </div>
             ) : (
               <div className="game-grid">
