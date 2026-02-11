@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-export function useSPCPlayer() {
+export function useSPCPlayer({ waitFor } = {}) {
   const [isReady, setIsReady] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTrack, setCurrentTrack] = useState(null)
@@ -35,9 +35,10 @@ export function useSPCPlayer() {
   }, [])
 
   // Load spc_snes.js engine script
-  // Strategy: save VGM's Module, temporarily clear it, load spc_snes.js,
-  // capture SPC functions, then restore VGM's Module
+  // Wait for VGM player to fully initialize first to avoid Module conflicts
   useEffect(() => {
+    if (!waitFor) return
+
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
         if (document.querySelector(`script[src="${src}"]`)) {
@@ -109,7 +110,7 @@ export function useSPCPlayer() {
     }).catch(err => {
       console.error('SPC script loading failed:', err)
     })
-  }, [initPlayer])
+  }, [initPlayer, waitFor])
 
   // UI elapsed timer
   useEffect(() => {

@@ -92,7 +92,7 @@ function App() {
   const initialHashHandled = useRef(false)
 
   const vgmPlayer = useVGMPlayer()
-  const spcPlayer = useSPCPlayer()
+  const spcPlayer = useSPCPlayer({ waitFor: vgmPlayer.isReady })
   const activeFormatRef = useRef('vgm')
   const player = activeFormatRef.current === 'spc' ? spcPlayer : vgmPlayer
 
