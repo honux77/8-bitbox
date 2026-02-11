@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useVGMPlayer } from './hooks/useVGMPlayer'
+import { useSPCPlayer } from './hooks/useSPCPlayer'
 import { Player } from './components/Player'
 import './App.css'
 
@@ -90,7 +91,10 @@ function App() {
   const [showHelp, setShowHelp] = useState(false)
   const initialHashHandled = useRef(false)
 
-  const player = useVGMPlayer()
+  const vgmPlayer = useVGMPlayer()
+  const spcPlayer = useSPCPlayer()
+  const activeFormatRef = useRef('vgm')
+  const player = activeFormatRef.current === 'spc' ? spcPlayer : vgmPlayer
 
   // Toggle favorite status
   const toggleFavorite = useCallback((e, gameId) => {
@@ -138,6 +142,11 @@ function App() {
     return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
+  // Get the right player for a game's format
+  const getPlayerForGame = useCallback((game) => {
+    return (game?.format === 'spc') ? spcPlayer : vgmPlayer
+  }, [spcPlayer, vgmPlayer])
+
   // Handle initial hash navigation (play from URL hash)
   const handleHashNavigation = useCallback(async (gamesData, hashInfo) => {
     if (!hashInfo || !hashInfo.gameId) return false
@@ -145,11 +154,15 @@ function App() {
     const game = gamesData.find(g => g.id === hashInfo.gameId)
     if (!game) return false
 
+    const targetPlayer = getPlayerForGame(game)
+    if (!targetPlayer.isReady) return false
+
+    activeFormatRef.current = game.format || 'vgm'
     setSelectedGame(game)
     setLoadingGame(true)
     setScreen('player')
 
-    const tracks = await player.loadZip(`/music/${game.zipFile}`)
+    const tracks = await targetPlayer.loadZip(`/music/${game.zipFile}`)
     setLoadingGame(false)
 
     if (tracks && tracks.length > 0) {
@@ -158,10 +171,10 @@ function App() {
         const foundIndex = tracks.findIndex(t => t.name === hashInfo.trackName)
         if (foundIndex !== -1) trackIndex = foundIndex
       }
-      setTimeout(() => player.play(trackIndex, tracks), 100)
+      setTimeout(() => targetPlayer.play(trackIndex, tracks), 100)
     }
     return true
-  }, [player])
+  }, [getPlayerForGame])
 
   // Load manifest
   useEffect(() => {
@@ -183,16 +196,26 @@ function App() {
 
   // Handle hash navigation when player is ready and games are loaded
   useEffect(() => {
-    if (!player.isReady || games.length === 0 || initialHashHandled.current) return
+    if (games.length === 0 || initialHashHandled.current) return
 
     const hashInfo = parseUrlParams()
-    if (hashInfo && hashInfo.gameId) {
+    if (!hashInfo || !hashInfo.gameId) {
       initialHashHandled.current = true
-      handleHashNavigation(games, hashInfo)
-    } else {
-      initialHashHandled.current = true
+      return
     }
-  }, [player.isReady, games, handleHashNavigation])
+
+    // Wait for the right player to be ready
+    const game = games.find(g => g.id === hashInfo.gameId)
+    if (!game) {
+      initialHashHandled.current = true
+      return
+    }
+    const targetPlayer = getPlayerForGame(game)
+    if (!targetPlayer.isReady) return
+
+    initialHashHandled.current = true
+    handleHashNavigation(games, hashInfo)
+  }, [vgmPlayer.isReady, spcPlayer.isReady, games, handleHashNavigation, getPlayerForGame])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -214,7 +237,8 @@ function App() {
           player.stop()
           break
         case 'Escape':
-          player.stop()
+          vgmPlayer.stop()
+          spcPlayer.stop()
           setScreen('select')
           setSelectedGame(null)
           setUrlParams(null, null)
@@ -231,18 +255,24 @@ function App() {
   }
 
   const handleGameSelect = async (game) => {
+    // Stop other player if switching formats
+    const newFormat = game.format || 'vgm'
+    if (newFormat !== activeFormatRef.current) {
+      player.stop()
+    }
+    activeFormatRef.current = newFormat
+
+    const targetPlayer = getPlayerForGame(game)
     setSelectedGame(game)
     setLoadingGame(true)
 
-    // Use static files from public folder
-    const tracks = await player.loadZip(`/music/${game.zipFile}`)
+    const tracks = await targetPlayer.loadZip(`/music/${game.zipFile}`)
     setLoadingGame(false)
     setScreen('player')
 
-    // Auto play first track with loaded tracks
     if (tracks && tracks.length > 0) {
       setTimeout(() => {
-        player.play(0, tracks)
+        targetPlayer.play(0, tracks)
         setUrlParams(game.id, tracks[0].name)
       }, 100)
     }
@@ -257,7 +287,8 @@ function App() {
   }, [player, selectedGame])
 
   const handleBack = () => {
-    player.stop()
+    vgmPlayer.stop()
+    spcPlayer.stop()
     setScreen('select')
     setSelectedGame(null)
     setUrlParams(null, null) // Clear hash
@@ -333,7 +364,7 @@ function App() {
             }}>
               SPACE: PLAY/PAUSE | N: NEXT | P: PREV | ESC: BACK
             </p>
-            {!player.isReady && (
+            {!vgmPlayer.isReady && !spcPlayer.isReady && (
               <p style={{
                 marginTop: '20px',
                 fontSize: '8px',
@@ -391,7 +422,7 @@ function App() {
               </div>
             </div>
 
-            {!player.isReady ? (
+            {!vgmPlayer.isReady && !spcPlayer.isReady ? (
               <div className="loading">
                 <p className="loading-text">LOADING ENGINE...</p>
                 <div className="loading-bar">
@@ -532,8 +563,8 @@ function App() {
             <div className="help-section">
               <h3>ABOUT</h3>
               <p className="help-about">
-                9-Player plays retro video game music (VGM) in your browser.
-                Powered by VGMPlay + Emscripten.
+                9-Player plays retro video game music (VGM/SPC) in your browser.
+                Powered by VGMPlay + snes_spc + Emscripten.
               </p>
             </div>
           </div>

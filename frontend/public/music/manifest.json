@@ -1,8 +1,9 @@
 {
-  "generatedAt": "2026-02-11T02:40:32.562Z",
+  "generatedAt": "2026-02-11T03:55:03.268Z",
   "games": [
     {
       "id": "Daikoukai_Jidai__Sharp_X68000_",
+      "format": "vgm",
       "zipFile": "Daikoukai_Jidai_(Sharp_X68000).zip",
       "title": "Daikoukai Jidai",
       "titleJp": "大航海時代",
@@ -126,6 +127,7 @@
     },
     {
       "id": "Daikoukai_Jidai_II__FM_Towns_",
+      "format": "vgm",
       "zipFile": "Daikoukai_Jidai_II_(FM_Towns).zip",
       "title": "Daikoukai Jidai II",
       "titleJp": "大航海時代II",
@@ -249,6 +251,7 @@
     },
     {
       "id": "Doom__PC_",
+      "format": "vgm",
       "zipFile": "Doom_(PC).zip",
       "title": "Doom",
       "titleJp": "",
@@ -377,6 +380,7 @@
     },
     {
       "id": "Doukyusei__FM_Towns_",
+      "format": "vgm",
       "zipFile": "Doukyusei_(FM_Towns).zip",
       "title": "Doukyusei",
       "titleJp": "同級生",
@@ -635,6 +639,7 @@
     },
     {
       "id": "Dragon_Warrior_II__NES_",
+      "format": "vgm",
       "zipFile": "Dragon_Warrior_II_(NES).zip",
       "title": "Dragon Warrior II",
       "titleJp": "ドラゴンクエストII 悪霊の神々",
@@ -773,6 +778,7 @@
     },
     {
       "id": "Dragon_Warrior_IV__NES_",
+      "format": "vgm",
       "zipFile": "Dragon_Warrior_IV_(NES).zip",
       "title": "Dragon Warrior IV",
       "titleJp": "ドラゴンクエストIV 導かれし者たち",
@@ -1021,6 +1027,7 @@
     },
     {
       "id": "Hinotori___Ho_o_Hen__MSX2_",
+      "format": "vgm",
       "zipFile": "Hinotori_-_Ho-o_Hen_(MSX2).zip",
       "title": "Hinotori: Hō-ō Hen",
       "titleJp": "火の鳥 鳳凰編",
@@ -1089,6 +1096,7 @@
     },
     {
       "id": "Megaman_2",
+      "format": "vgm",
       "zipFile": "Megaman 2.zip",
       "title": "Mega Man 2",
       "titleJp": "ロックマン2 Dr.ワイリーの謎",
@@ -1232,6 +1240,7 @@
     },
     {
       "id": "Metal_Gear_2___Solid_Snake__MSX2_",
+      "format": "vgm",
       "zipFile": "Metal_Gear_2_-_Solid_Snake_(MSX2).zip",
       "title": "Metal Gear 2: Solid Snake",
       "titleJp": "メタルギア2 ソリッドスネーク",
@@ -1485,6 +1494,7 @@
     },
     {
       "id": "Monkey_Island_2___LeChuck_s_Revenge__IBM_PC_AT_",
+      "format": "vgm",
       "zipFile": "Monkey_Island_2_-_LeChuck's_Revenge_(IBM_PC_AT).zip",
       "title": "Monkey Island 2: LeChuck's Revenge",
       "titleJp": "",
@@ -2018,6 +2028,7 @@
     },
     {
       "id": "Mother",
+      "format": "vgm",
       "zipFile": "Mother.zip",
       "title": "Mother",
       "titleJp": "MOTHER",
@@ -2231,6 +2242,7 @@
     },
     {
       "id": "Nemesis_2__MSX_",
+      "format": "vgm",
       "zipFile": "Nemesis_2_(MSX).zip",
       "title": "Nemesis 2",
       "titleJp": "グラディウス2",
@@ -2329,6 +2341,7 @@
     },
     {
       "id": "Ninja_Gaiden_II___The_Dark_Sword_of_Chaos__NES_",
+      "format": "vgm",
       "zipFile": "Ninja_Gaiden_II_-_The_Dark_Sword_of_Chaos_(NES).zip",
       "title": "Ninja Gaiden II: The Dark Sword of Chaos",
       "titleJp": "忍者龍剣伝II 暗黒の邪神剣",
@@ -2492,6 +2505,7 @@
     },
     {
       "id": "Princess_Maker_2__PC_",
+      "format": "vgm",
       "zipFile": "Princess_Maker_2_(PC).zip",
       "title": "Princess Maker 2",
       "titleJp": "プリンセスメーカー 2",
@@ -2695,6 +2709,7 @@
     },
     {
       "id": "Romance_of_the_Three_Kingdoms_III__Mega_Drive__Genesis_",
+      "format": "vgm",
       "zipFile": "Romance of the Three Kingdoms III (Mega Drive, Genesis).zip",
       "title": "Romance of the Three Kingdoms III",
       "titleJp": "三國志 III",
@@ -2823,6 +2838,7 @@
     },
     {
       "id": "Sonic_the_Hedgehog__Mega_Drive__Genesis_",
+      "format": "vgm",
       "zipFile": "Sonic the Hedgehog (Mega Drive, Genesis).zip",
       "title": "Sonic the Hedgehog",
       "titleJp": "ソニック・ザ・ヘッジホッグ",
@@ -2931,6 +2947,7 @@
     },
     {
       "id": "Sonic_the_Hedgehog_2__Mega_Drive__Genesis_",
+      "format": "vgm",
       "zipFile": "Sonic the Hedgehog 2 (Mega Drive, Genesis).zip",
       "title": "Sonic the Hedgehog 2",
       "titleJp": "ソニック・ザ・ヘッジホッグ２",
@@ -3099,6 +3116,7 @@
     },
     {
       "id": "Sonic_the_Hedgehog_3__Mega_Drive__Genesis_",
+      "format": "vgm",
       "zipFile": "Sonic the Hedgehog 3 (Mega Drive, Genesis).zip",
       "title": "Sonic the Hedgehog 3",
       "titleJp": "ソニック・ザ・ヘッジホッグ3",
@@ -3302,6 +3320,7 @@
     },
     {
       "id": "The_Maze_of_Galious__MSX_",
+      "format": "vgm",
       "zipFile": "The_Maze_of_Galious_(MSX).zip",
       "title": "The Maze of Galious",
       "titleJp": "魔城伝説Ⅱ ガリウスの迷宮",
@@ -3390,6 +3409,7 @@
     },
     {
       "id": "The_Secret_of_Monkey_Island__IBM_PC_AT_",
+      "format": "vgm",
       "zipFile": "The_Secret_of_Monkey_Island_(IBM_PC_AT).zip",
       "title": "The Secret of Monkey Island",
       "titleJp": "",
@@ -3488,6 +3508,7 @@
     },
     {
       "id": "Ys_III___Wanderers_from_Ys__Sharp_X68000_",
+      "format": "vgm",
       "zipFile": "Ys_III_-_Wanderers_from_Ys_(Sharp_X68000).zip",
       "title": "Ys III: Wanderers from Ys",
       "titleJp": "イースIII",
@@ -3661,6 +3682,7 @@
     },
     {
       "id": "Ys_II_Special__IBM_PC_AT_",
+      "format": "vgm",
       "zipFile": "Ys_II_Special_(IBM_PC_AT).zip",
       "title": "Ys II Special",
       "titleJp": "이스２스페셜",
@@ -3994,6 +4016,7 @@
     },
     {
       "id": "Zeliard__IBM_PC_AT__OPL_",
+      "format": "vgm",
       "zipFile": "Zeliard_(IBM_PC_AT,_OPL).zip",
       "title": "Zeliard",
       "titleJp": "ゼリアード",
@@ -4087,6 +4110,1256 @@
           "filename": "17 To a New Adventure.vgz",
           "name": "To a New Adventure",
           "nameJp": "新たなる冒険へ"
+        }
+      ]
+    },
+    {
+      "id": "earthbound",
+      "format": "spc",
+      "zipFile": "earthbound.zip",
+      "title": "Earthbound",
+      "titleJp": "",
+      "system": "Super Nintendo",
+      "author": "Akio Ohmori, Ritsuo Kamimura, Ke",
+      "coverImage": "covers/earthbound.png",
+      "ogImage": "og-covers/earthbound.png",
+      "trackCount": 206,
+      "tracks": [
+        {
+          "filename": "mo2-001a.spc",
+          "name": "The Evil Giygas Attacks! (part 1",
+          "duration": 28,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-001b.spc",
+          "name": "The Evil Giygas Attacks! (part 2",
+          "duration": 14,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-002.spc",
+          "name": "Title Screen",
+          "duration": 14,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-003.spc",
+          "name": "Opening Credits",
+          "duration": 73,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-004.spc",
+          "name": "Choose a File",
+          "duration": 60,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-005a.spc",
+          "name": "Your Name, Please",
+          "duration": 181,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-005b.spc",
+          "name": "Your Name, Please (Noiseless)",
+          "duration": 181,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-006.spc",
+          "name": "Now, Let's Go!",
+          "duration": 7,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-007.spc",
+          "name": "One Fateful Night...",
+          "duration": 37,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-008a.spc",
+          "name": "Unidentified Falling Object",
+          "duration": 19,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-008b.spc",
+          "name": "Rude Awakening",
+          "duration": 64,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-009a.spc",
+          "name": "Alien Invasion 1",
+          "duration": 72,
+          "fade": 11000
+        },
+        {
+          "filename": "mo2-009b.spc",
+          "name": "Alien Invasion 2",
+          "duration": 51,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-010a.spc",
+          "name": "Someone's Knocking at the Door",
+          "duration": 34,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-010b.spc",
+          "name": "What an Annoying Knock!",
+          "duration": 34,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-011.spc",
+          "name": "Whoa!",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-012.spc",
+          "name": "Pokey",
+          "duration": 38,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-013.spc",
+          "name": "A Good Buddy",
+          "duration": 3,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-014.spc",
+          "name": "Buzz Buzz's Prophecy",
+          "duration": 88,
+          "fade": 6180
+        },
+        {
+          "filename": "mo2-015a.spc",
+          "name": "Onett Night 1",
+          "duration": 73,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-015b.spc",
+          "name": "Onett Night 2",
+          "duration": 76,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-015c.spc",
+          "name": "Onett Night 3",
+          "duration": 37,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-016a.spc",
+          "name": "Onett Buzz Buzz 1",
+          "duration": 75,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-016b.spc",
+          "name": "Onett Buzz Buzz 2",
+          "duration": 38,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-016c.spc",
+          "name": "Onett Buzz Buzz 3",
+          "duration": 197,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-017.spc",
+          "name": "Otherworldly Foe",
+          "duration": 98,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-018a.spc",
+          "name": "Pokey's House",
+          "duration": 40,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-018b.spc",
+          "name": "Pokey's House (Buzz Buzz)",
+          "duration": 40,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-019a.spc",
+          "name": "Sunrise & Onett Theme",
+          "duration": 142,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-019b.spc",
+          "name": "Onett Theme",
+          "duration": 135,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-020.spc",
+          "name": "What a Great Picture!",
+          "duration": 30,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-021.spc",
+          "name": "Home Sweet Home",
+          "duration": 104,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-022.spc",
+          "name": "Friendly Neighbors",
+          "duration": 25,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-023.spc",
+          "name": "Buy Somethin' Will Ya!",
+          "duration": 63,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-024.spc",
+          "name": "Enjoy Your Stay",
+          "duration": 27,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-025.spc",
+          "name": "A Good Night's Rest",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-026.spc",
+          "name": "Bed and Breakfast",
+          "duration": 29,
+          "fade": 11000
+        },
+        {
+          "filename": "mo2-027.spc",
+          "name": "Hospital",
+          "duration": 112,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-028.spc",
+          "name": "Oncoming Foe",
+          "duration": 6,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-029.spc",
+          "name": "Ambush!",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-030.spc",
+          "name": "Battle Against a Weak Opponent",
+          "duration": 58,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-031.spc",
+          "name": "Battle Against a Weird Opponent",
+          "duration": 75,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-032.spc",
+          "name": "Battle Against a Mobile Opponent",
+          "duration": 63,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-033.spc",
+          "name": "You Win!",
+          "duration": 18,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-034.spc",
+          "name": "That Was Easy!",
+          "duration": 3,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-035.spc",
+          "name": "You Gained a Level!",
+          "duration": 14,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-036.spc",
+          "name": "Onett's Arcade",
+          "duration": 20,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-037.spc",
+          "name": "Franky",
+          "duration": 67,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-038.spc",
+          "name": "Battle Against an Unsettling Opp",
+          "duration": 116,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-039.spc",
+          "name": "Dangerous Caves",
+          "duration": 65,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-040.spc",
+          "name": "Sanctuary Guardian's Challenge",
+          "duration": 12,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-041.spc",
+          "name": "Oncoming Boss",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-042.spc",
+          "name": "Sanctuary Guardian",
+          "duration": 132,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-043.spc",
+          "name": "A Bad Dream",
+          "duration": 77,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-044.spc",
+          "name": "You Defeated the Boss!",
+          "duration": 3,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-045.spc",
+          "name": "Welcome to Your Sanctuary",
+          "duration": 42,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-046a.spc",
+          "name": "Your Sanctuary ~ Giant Step",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-046b.spc",
+          "name": "Your Sanctuary ~ Lilliput Steps",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-046c.spc",
+          "name": "Your Sanctuary ~ Milky Well",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-046d.spc",
+          "name": "Your Sanctuary ~ Rainy Circle",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-046e.spc",
+          "name": "Your Sanctuary ~ Magnet Hill",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-046f.spc",
+          "name": "Your Sanctuary ~ Pink Cloud",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-046g.spc",
+          "name": "Your Sanctuary ~ Lumine Hall",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-046h.spc",
+          "name": "Your Sanctuary ~ Fire Spring",
+          "duration": 7,
+          "fade": 2000
+        },
+        {
+          "filename": "mo2-047.spc",
+          "name": "A Flash of Memory",
+          "duration": 37,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-048.spc",
+          "name": "Boy Meets Girl",
+          "duration": 129,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-049.spc",
+          "name": "Apple Kid's Theme",
+          "duration": 62,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-050.spc",
+          "name": "Ness' Bike",
+          "duration": 76,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-051.spc",
+          "name": "Paula's Theme",
+          "duration": 63,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-052a.spc",
+          "name": "Peaceful Rest Valley",
+          "duration": 68,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-052b.spc",
+          "name": "Flowing Water",
+          "duration": 34,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-053.spc",
+          "name": "Happy-Happy is Blue",
+          "duration": 144,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-054.spc",
+          "name": "You've Got a New Friend!",
+          "duration": 9,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-055.spc",
+          "name": "Dead-End Chaos Theatre",
+          "duration": 109,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-056.spc",
+          "name": "Runaway Five ~ The Daily Show",
+          "duration": 60,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-057.spc",
+          "name": "Runaway Five Left the Building!",
+          "duration": 65,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-058.spc",
+          "name": "Runaway Five on the Move!",
+          "duration": 77,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-059.spc",
+          "name": "Threed, Zombie Central",
+          "duration": 75,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-060.spc",
+          "name": "Heartless Hotel",
+          "duration": 48,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-061.spc",
+          "name": "Whoops!",
+          "duration": 6,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-062.spc",
+          "name": "In Winters, There is a Genius",
+          "duration": 171,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-063.spc",
+          "name": "Snowman",
+          "duration": 135,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-064.spc",
+          "name": "Winters White",
+          "duration": 136,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-065.spc",
+          "name": "Winters Wake Up Call",
+          "duration": 17,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-066.spc",
+          "name": "Tessie Has Been Sighted!",
+          "duration": 20,
+          "fade": 11000
+        },
+        {
+          "filename": "mo2-067.spc",
+          "name": "Tessie!",
+          "duration": 86,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-068.spc",
+          "name": "Caverns of Winters",
+          "duration": 78,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-069.spc",
+          "name": "Dr. Andonuts' Lab",
+          "duration": 78,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-070.spc",
+          "name": "The Sky Runner",
+          "duration": 116,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-071.spc",
+          "name": "Going Down!",
+          "duration": 8,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-072.spc",
+          "name": "Rough Landing",
+          "duration": 7,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-073.spc",
+          "name": "Escargo Express at Your Service!",
+          "duration": 28,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-074.spc",
+          "name": "Zombie Paper",
+          "duration": 44,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-075.spc",
+          "name": "Saturn Valley Caverns",
+          "duration": 44,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-076.spc",
+          "name": "Hi Hi Hi",
+          "duration": 83,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-077.spc",
+          "name": "Belch's Factory",
+          "duration": 123,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-078.spc",
+          "name": "Battle Against Belch",
+          "duration": 86,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-079.spc",
+          "name": "You've Come Far, Ness",
+          "duration": 128,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-080.spc",
+          "name": "Threed, Free at Last",
+          "duration": 186,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-081.spc",
+          "name": "Get on the Bus",
+          "duration": 88,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-082.spc",
+          "name": "Super Dry Dance",
+          "duration": 99,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-083.spc",
+          "name": "The Metropolis of Fourside",
+          "duration": 194,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-084.spc",
+          "name": "Topolla Theatre, Home to the One",
+          "duration": 98,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-085.spc",
+          "name": "Runaway Five's Final Performance",
+          "duration": 70,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-086.spc",
+          "name": "Venus Live!",
+          "duration": 131,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-087.spc",
+          "name": "Save the Miners!",
+          "duration": 136,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-088.spc",
+          "name": "Boris' Cocktail",
+          "duration": 88,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-089.spc",
+          "name": "Moonside Swing",
+          "duration": 28,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-090.spc",
+          "name": "Bad Morning to You",
+          "duration": 22,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-091.spc",
+          "name": "The Monkeys' Maze",
+          "duration": 50,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-092.spc",
+          "name": "Runaway Five to the Rescue!",
+          "duration": 16,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-093.spc",
+          "name": "Summers, Eternal Tourist Trap",
+          "duration": 79,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-094.spc",
+          "name": "In Dalaam, There is a Warrior",
+          "duration": 46,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-095.spc",
+          "name": "The Floating Kingdom of Dalaam",
+          "duration": 133,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-096.spc",
+          "name": "Mu Training",
+          "duration": 27,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-097.spc",
+          "name": "Pink Cloud Shrine",
+          "duration": 85,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-098a.spc",
+          "name": "Sailing to Scaraba",
+          "duration": 65,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-098b.spc",
+          "name": "The Voyage Continues",
+          "duration": 41,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-099.spc",
+          "name": "Kraken of the Sea",
+          "duration": 163,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-100.spc",
+          "name": "Bazaar",
+          "duration": 127,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-101.spc",
+          "name": "Morning in the Desert",
+          "duration": 20,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-102.spc",
+          "name": "The Unforgiving Desert",
+          "duration": 127,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-103.spc",
+          "name": "Pyramid",
+          "duration": 95,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-104.spc",
+          "name": "Inside the Dungeon",
+          "duration": 44,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-105.spc",
+          "name": "Megaton Walk",
+          "duration": 24,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-106.spc",
+          "name": "The Submarine",
+          "duration": 58,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-107.spc",
+          "name": "The Deep Darkness",
+          "duration": 144,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-108.spc",
+          "name": "The Tendas' Cave",
+          "duration": 103,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-109.spc",
+          "name": "Battle Against a Machine",
+          "duration": 95,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-110.spc",
+          "name": "Stonehenge Base Shuts Down",
+          "duration": 20,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-111.spc",
+          "name": "Falling Underground!",
+          "duration": 7,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-112.spc",
+          "name": "The Lost Underworld",
+          "duration": 179,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-113.spc",
+          "name": "Lava Springs",
+          "duration": 62,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-114a.spc",
+          "name": "Sound Stone ~ Giant Step",
+          "duration": 5,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114b.spc",
+          "name": "Sound Stone ~ Lilliput Steps",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114c.spc",
+          "name": "Sound Stone ~ Milky Well",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114d.spc",
+          "name": "Sound Stone ~ Rainy Circle",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114e.spc",
+          "name": "Sound Stone ~ Magnet Hill",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114f.spc",
+          "name": "Sound Stone ~ Pink Cloud",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114g.spc",
+          "name": "Sound Stone ~ Lumine Hall",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114h.spc",
+          "name": "Sound Stone ~ Fire Spring",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114i.spc",
+          "name": "Sound Stone ~ No Sounds",
+          "duration": 8,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114j.spc",
+          "name": "Sound Stone ~ Giant Step (Comple",
+          "duration": 5,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114k.spc",
+          "name": "Sound Stone ~ Lilliput Steps (Co",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114l.spc",
+          "name": "Sound Stone ~ Milky Well (Comple",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114m.spc",
+          "name": "Sound Stone ~ Rainy Circle (Comp",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114n.spc",
+          "name": "Sound Stone ~ Magnet Hill (Compl",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114o.spc",
+          "name": "Sound Stone ~ Pink Cloud (Comple",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114p.spc",
+          "name": "Sound Stone ~ Lumine Hall (Compl",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114q.spc",
+          "name": "Sound Stone ~ Fire Spring (Compl",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-114r.spc",
+          "name": "Sound Stone ~ No Sounds (Complet",
+          "duration": 8,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-115.spc",
+          "name": "Eight Melodies",
+          "duration": 131,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-116.spc",
+          "name": "The Nightmare Begins...",
+          "duration": 12,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-117.spc",
+          "name": "Welcome Home",
+          "duration": 173,
+          "fade": 11000
+        },
+        {
+          "filename": "mo2-118.spc",
+          "name": "The Jolly Flying Man",
+          "duration": 40,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-119.spc",
+          "name": "Deeper into Ness' Subconscious",
+          "duration": 86,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-120.spc",
+          "name": "Sea of Eden",
+          "duration": 93,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-121.spc",
+          "name": "The Power",
+          "duration": 61,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-122.spc",
+          "name": "Ness Awakens from the Nightmare",
+          "duration": 39,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-123.spc",
+          "name": "Spacetoneer",
+          "duration": 17,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-124a.spc",
+          "name": "Phase Distorter Failed",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-124b.spc",
+          "name": "Phase Distorter Success",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-125.spc",
+          "name": "The Cliff That Time Forgot",
+          "duration": 18,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-126.spc",
+          "name": "The Place",
+          "duration": 58,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-127.spc",
+          "name": "Giygas' Lair",
+          "duration": 45,
+          "fade": 8000
+        },
+        {
+          "filename": "mo2-128.spc",
+          "name": "Giygas' Intro",
+          "duration": 123,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-129.spc",
+          "name": "Pokey Means Business!",
+          "duration": 211,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-130.spc",
+          "name": "Giygas Stirs",
+          "duration": 39,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-131.spc",
+          "name": "Giygas' Intimidation",
+          "duration": 59,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-132.spc",
+          "name": "Prayer for Safety",
+          "duration": 110,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-133.spc",
+          "name": "Giygas is Wounded!",
+          "duration": 41,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-134.spc",
+          "name": "Giygas is Fatally Wounded!",
+          "duration": 18,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-135.spc",
+          "name": "Giygas Disintegrates",
+          "duration": 18,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-136.spc",
+          "name": "Giygas' Static",
+          "duration": 7,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-137a.spc",
+          "name": "The Heroes Return (part 1)",
+          "duration": 90,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-137b.spc",
+          "name": "The Heroes Return (part 2)",
+          "duration": 118,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-138.spc",
+          "name": "Because I Love You",
+          "duration": 222,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-139.spc",
+          "name": "Good Friends, Bad Friends",
+          "duration": 231,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-140.spc",
+          "name": "Smiles and Tears",
+          "duration": 348,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-b001.spc",
+          "name": "Hidden Track",
+          "duration": 71,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-b002.spc",
+          "name": "Unused Pokey Jingle",
+          "duration": 8,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-b003.spc",
+          "name": "Unknown Jingle 1",
+          "duration": 2,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-b004.spc",
+          "name": "Unknown Jingle 2",
+          "duration": 2,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-b005.spc",
+          "name": "Mysterious Crash",
+          "duration": 7,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s001.spc",
+          "name": "Onett's Trumpet Player",
+          "duration": 7,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s002.spc",
+          "name": "Key Item Fanfare",
+          "duration": 2,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s003.spc",
+          "name": "Spell Learned",
+          "duration": 2,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s004.spc",
+          "name": "Secret Passage",
+          "duration": 1,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s005.spc",
+          "name": "Spooky...",
+          "duration": 3,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s006.spc",
+          "name": "Evil Mani Mani Statue",
+          "duration": 3,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s007.spc",
+          "name": "Magic Butterfly",
+          "duration": 4,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s008.spc",
+          "name": "Master of the Stars",
+          "duration": 3,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s009a.spc",
+          "name": "The Sphinx's Puzzle 1",
+          "duration": 1,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s009b.spc",
+          "name": "The Sphinx's Puzzle 2",
+          "duration": 1,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s009c.spc",
+          "name": "The Sphinx's Puzzle 3",
+          "duration": 1,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s009d.spc",
+          "name": "The Sphinx's Puzzle 4",
+          "duration": 1,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s009e.spc",
+          "name": "The Sphinx's Puzzle 5",
+          "duration": 1,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s009f.spc",
+          "name": "The Sphinx's Puzzle Solved!",
+          "duration": 2,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s010a.spc",
+          "name": "Teleportation",
+          "duration": 11,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s010b.spc",
+          "name": "Teleportation End",
+          "duration": 5,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s011.spc",
+          "name": "Buzz Buzz's Demise",
+          "duration": 3,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-s012.spc",
+          "name": "Mechanical Tinkering",
+          "duration": 18,
+          "fade": 9000
+        },
+        {
+          "filename": "mo2-s013.spc",
+          "name": "Drilling",
+          "duration": 30,
+          "fade": 7000
+        },
+        {
+          "filename": "mo2-s014.spc",
+          "name": "Phone",
+          "duration": 5,
+          "fade": 6000
+        },
+        {
+          "filename": "mo2-v001.spc",
+          "name": "OK 'Ssuka?",
+          "duration": 1,
+          "fade": 10000
+        },
+        {
+          "filename": "mo2-v002.spc",
+          "name": "Burp",
+          "duration": 1,
+          "fade": 10000
         }
       ]
     }

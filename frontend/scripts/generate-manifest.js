@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const DIST_DIR = path.join(__dirname, '../../vgz')
+const SPC_DIR = path.join(__dirname, '../../spc')
 const OUTPUT_DIR = path.join(__dirname, '../public/music')
 const COVERS_DIR = path.join(OUTPUT_DIR, 'covers')
 const OG_COVERS_DIR = path.join(OUTPUT_DIR, 'og-covers')
@@ -304,6 +305,114 @@ async function processZipFile(zipPath, gameId) {
   }
 }
 
+function parseSPCID666(buffer) {
+  try {
+    // Check SPC magic: "SNES-SPC700 Sound File Data v0.30"
+    const magic = String.fromCharCode(...buffer.slice(0, 33))
+    if (!magic.startsWith('SNES-SPC700')) return null
+
+    const readString = (offset, len) => {
+      const bytes = buffer.slice(offset, offset + len)
+      const end = bytes.indexOf(0)
+      const str = new TextDecoder('ascii').decode(end >= 0 ? bytes.slice(0, end) : bytes)
+      return str.trim()
+    }
+
+    // ID666 tag offsets (text format)
+    const title = readString(0x2E, 32)
+    const game = readString(0x4E, 32)
+    const artist = readString(0xB1, 32)
+
+    // Duration in seconds (3 bytes ASCII at 0xA9)
+    const durationStr = readString(0xA9, 3)
+    const duration = parseInt(durationStr, 10) || 0
+
+    // Fade length in ms (5 bytes ASCII at 0xAC)
+    // Note: fade field starts right after duration at 0xAC (0xA9 + 3)
+    const fadeStr = readString(0xAC, 5)
+    const fade = parseInt(fadeStr, 10) || 0
+
+    return { title, game, artist, duration, fade }
+  } catch (e) {
+    return null
+  }
+}
+
+async function processSPCZipFile(zipPath, gameId) {
+  const data = fs.readFileSync(zipPath)
+  const zip = await JSZip.loadAsync(data)
+
+  const tracks = []
+  let gameInfo = null
+  let coverImageData = null
+  let coverImageExt = null
+
+  for (const [filename, file] of Object.entries(zip.files)) {
+    if (file.dir) continue
+
+    const lowerName = filename.toLowerCase()
+
+    // Get cover image
+    if (lowerName.endsWith('.png') || lowerName.endsWith('.jpg') || lowerName.endsWith('.jpeg')) {
+      coverImageData = await file.async('uint8array')
+      coverImageExt = path.extname(filename).toLowerCase()
+    }
+
+    // Process SPC files
+    if (lowerName.endsWith('.spc')) {
+      const buffer = await file.async('uint8array')
+      const spcInfo = parseSPCID666(buffer)
+
+      tracks.push({
+        filename,
+        name: spcInfo?.title || path.basename(filename, '.spc'),
+        duration: spcInfo?.duration || 0,
+        fade: spcInfo?.fade || 10000
+      })
+
+      // Get game info from first track with valid metadata
+      if (!gameInfo && spcInfo && spcInfo.game) {
+        gameInfo = {
+          title: spcInfo.game,
+          titleJp: '',
+          system: 'Super Nintendo',
+          author: spcInfo.artist || ''
+        }
+      }
+    }
+  }
+
+  // Save cover image if found
+  let coverImagePath = null
+  let ogImagePath = null
+
+  if (coverImageData && coverImageExt) {
+    const coverFileName = `${gameId}${coverImageExt}`
+    const coverFullPath = path.join(COVERS_DIR, coverFileName)
+    fs.writeFileSync(coverFullPath, coverImageData)
+    coverImagePath = `covers/${coverFileName}`
+    console.log(`  -> Extracted cover image: ${coverFileName}`)
+
+    // Generate OG image
+    try {
+      const ogFileName = `${gameId}.png`
+      const ogFullPath = path.join(OG_COVERS_DIR, ogFileName)
+      const { resW, resH } = await createOGImage(coverImageData, gameInfo, ogFullPath)
+      ogImagePath = `og-covers/${ogFileName}`
+      console.log(`  -> Generated OG image: ${ogFileName} (cover ${resW}x${resH})`)
+    } catch (e) {
+      console.log(`  -> Failed to generate OG image: ${e.message}`)
+    }
+  }
+
+  return {
+    gameInfo,
+    tracks,
+    coverImage: coverImagePath,
+    ogImage: ogImagePath
+  }
+}
+
 async function main() {
   console.log('Scanning dist folder for zip files...')
 
@@ -336,6 +445,7 @@ async function main() {
 
       const game = {
         id: gameId,
+        format: 'vgm',
         zipFile: file,
         title: gameInfo?.title || path.basename(file, '.zip'),
         titleJp: gameInfo?.titleJp || '',
@@ -356,6 +466,46 @@ async function main() {
 
     } catch (e) {
       console.error(`  Error processing ${file}:`, e.message)
+    }
+  }
+
+  // Process SPC directory
+  if (fs.existsSync(SPC_DIR)) {
+    const spcFiles = fs.readdirSync(SPC_DIR).filter(f => f.endsWith('.zip'))
+    console.log(`\nFound ${spcFiles.length} SPC zip files`)
+
+    for (const file of spcFiles) {
+      console.log(`Processing SPC: ${file}...`)
+      const zipPath = path.join(SPC_DIR, file)
+      const gameId = path.basename(file, '.zip').replace(/[^a-zA-Z0-9]/g, '_')
+
+      try {
+        const { gameInfo, tracks, coverImage, ogImage } = await processSPCZipFile(zipPath, gameId)
+
+        const game = {
+          id: gameId,
+          format: 'spc',
+          zipFile: file,
+          title: gameInfo?.title || path.basename(file, '.zip'),
+          titleJp: gameInfo?.titleJp || '',
+          system: gameInfo?.system || 'Super Nintendo',
+          author: gameInfo?.author || '',
+          coverImage: coverImage,
+          ogImage: ogImage,
+          trackCount: tracks.length,
+          tracks: tracks
+        }
+
+        manifest.games.push(game)
+        console.log(`  -> ${game.title} (${tracks.length} tracks)`)
+
+        // Copy zip file to public/music
+        const destPath = path.join(OUTPUT_DIR, file)
+        fs.copyFileSync(zipPath, destPath)
+
+      } catch (e) {
+        console.error(`  Error processing ${file}:`, e.message)
+      }
     }
   }
 
