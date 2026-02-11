@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-11T03:55:03.268Z",
+  "generatedAt": "2026-02-11T04:44:41.368Z",
   "games": [
     {
       "id": "Daikoukai_Jidai__Sharp_X68000_",
@@ -5359,6 +5359,568 @@
           "filename": "mo2-v002.spc",
           "name": "Burp",
           "duration": 1,
+          "fade": 10000
+        }
+      ]
+    },
+    {
+      "id": "Final_Fantasy_V",
+      "format": "spc",
+      "zipFile": "Final Fantasy V.zip",
+      "title": "Final Fantasy 5",
+      "titleJp": "",
+      "system": "Super Nintendo",
+      "author": "Nobuo Uematsu",
+      "coverImage": "covers/Final_Fantasy_V.png",
+      "ogImage": "og-covers/Final_Fantasy_V.png",
+      "trackCount": 67,
+      "tracks": [
+        {
+          "filename": "ff5-1-01.spc",
+          "name": "Ahead on our Way",
+          "duration": 143,
+          "fade": 5190
+        },
+        {
+          "filename": "ff5-1-02.spc",
+          "name": "A Presentiment",
+          "duration": 268,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-1-03.spc",
+          "name": "Four Valiant Hearts",
+          "duration": 90,
+          "fade": 6320
+        },
+        {
+          "filename": "ff5-1-04.spc",
+          "name": "Hurry! Hurry!",
+          "duration": 32,
+          "fade": 16260
+        },
+        {
+          "filename": "ff5-1-05.spc",
+          "name": "Lenna's Theme",
+          "duration": 140,
+          "fade": 6000
+        },
+        {
+          "filename": "ff5-1-06.spc",
+          "name": "Fate in Haze",
+          "duration": 134,
+          "fade": 8689
+        },
+        {
+          "filename": "ff5-1-07.spc",
+          "name": "The Battle",
+          "duration": 62,
+          "fade": 6179
+        },
+        {
+          "filename": "ff5-1-08.spc",
+          "name": "Victory's Fanfare",
+          "duration": 31,
+          "fade": 14400
+        },
+        {
+          "filename": "ff5-1-09.spc",
+          "name": "Requiem",
+          "duration": 25,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-1-10.spc",
+          "name": "Pirates Ahoy!",
+          "duration": 113,
+          "fade": 5459
+        },
+        {
+          "filename": "ff5-1-11.spc",
+          "name": "Tenderness in the Air",
+          "duration": 148,
+          "fade": 6480
+        },
+        {
+          "filename": "ff5-1-12.spc",
+          "name": "Good Night!",
+          "duration": 5,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-1-13.spc",
+          "name": "Sealed Away",
+          "duration": 96,
+          "fade": 10759
+        },
+        {
+          "filename": "ff5-1-14.spc",
+          "name": "Cursed Earths",
+          "duration": 100,
+          "fade": 8339
+        },
+        {
+          "filename": "ff5-1-15.spc",
+          "name": "Deception",
+          "duration": 61,
+          "fade": 5669
+        },
+        {
+          "filename": "ff5-1-16.spc",
+          "name": "Harvest",
+          "duration": 92,
+          "fade": 4980
+        },
+        {
+          "filename": "ff5-1-17.spc",
+          "name": "Walking the Snowy Mountains",
+          "duration": 98,
+          "fade": 6040
+        },
+        {
+          "filename": "ff5-1-18.spc",
+          "name": "Danger!",
+          "duration": 70,
+          "fade": 5879
+        },
+        {
+          "filename": "ff5-1-19.spc",
+          "name": "The Fierce Battle",
+          "duration": 135,
+          "fade": 5980
+        },
+        {
+          "filename": "ff5-1-20.spc",
+          "name": "The Dragon Spreads it's Wings",
+          "duration": 95,
+          "fade": 7540
+        },
+        {
+          "filename": "ff5-1-21.spc",
+          "name": "Royal Palace",
+          "duration": 85,
+          "fade": 5179
+        },
+        {
+          "filename": "ff5-1-22.spc",
+          "name": "The Fire Powered Ship",
+          "duration": 85,
+          "fade": 5929
+        },
+        {
+          "filename": "ff5-1-23.spc",
+          "name": "Run!",
+          "duration": 38,
+          "fade": 6080
+        },
+        {
+          "filename": "ff5-1-24.spc",
+          "name": "Nostalgia",
+          "duration": 83,
+          "fade": 10550
+        },
+        {
+          "filename": "ff5-1-25.spc",
+          "name": "The Ancient Library",
+          "duration": 142,
+          "fade": 6790
+        },
+        {
+          "filename": "ff5-1-26.spc",
+          "name": "Reminiscence",
+          "duration": 98,
+          "fade": 7799
+        },
+        {
+          "filename": "ff5-1-27.spc",
+          "name": "Musica Machina",
+          "duration": 72,
+          "fade": 10150
+        },
+        {
+          "filename": "ff5-1-28.spc",
+          "name": "The Day Will Come",
+          "duration": 141,
+          "fade": 6509
+        },
+        {
+          "filename": "ff5-1-29.spc",
+          "name": "What?",
+          "duration": 44,
+          "fade": 5700
+        },
+        {
+          "filename": "ff5-1-30.spc",
+          "name": "Mambo de Chocobo!",
+          "duration": 58,
+          "fade": 6040
+        },
+        {
+          "filename": "ff5-1-31.spc",
+          "name": "My Home, Sweet Home",
+          "duration": 138,
+          "fade": 6370
+        },
+        {
+          "filename": "ff5-1-32.spc",
+          "name": "Music Box",
+          "duration": 110,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-1-33.spc",
+          "name": "The Airship",
+          "duration": 108,
+          "fade": 5139
+        },
+        {
+          "filename": "ff5-1-34.spc",
+          "name": "The Evil Lord Exdeath",
+          "duration": 117,
+          "fade": 6110
+        },
+        {
+          "filename": "ff5-2-01.spc",
+          "name": "Exdeath's Castle",
+          "duration": 127,
+          "fade": 7780
+        },
+        {
+          "filename": "ff5-2-02.spc",
+          "name": "The Four Warriors of Dawn",
+          "duration": 121,
+          "fade": 7870
+        },
+        {
+          "filename": "ff5-2-03.spc",
+          "name": "Battle with Gilgamesh",
+          "duration": 134,
+          "fade": 10210
+        },
+        {
+          "filename": "ff5-2-04.spc",
+          "name": "Unknown Lands",
+          "duration": 123,
+          "fade": 7019
+        },
+        {
+          "filename": "ff5-2-05.spc",
+          "name": "Critter Tripper Fritter!",
+          "duration": 71,
+          "fade": 5459
+        },
+        {
+          "filename": "ff5-2-06.spc",
+          "name": "The Castle of Dawn",
+          "duration": 107,
+          "fade": 5219
+        },
+        {
+          "filename": "ff5-2-07.spc",
+          "name": "Beyond the Deep Blue Sea",
+          "duration": 92,
+          "fade": 4750
+        },
+        {
+          "filename": "ff5-2-08.spc",
+          "name": "As I Feel, You Feel",
+          "duration": 123,
+          "fade": 11189
+        },
+        {
+          "filename": "ff5-2-09.spc",
+          "name": "Waltz Suomi",
+          "duration": 122,
+          "fade": 4290
+        },
+        {
+          "filename": "ff5-2-10.spc",
+          "name": "Go Go Boco!",
+          "duration": 61,
+          "fade": 7480
+        },
+        {
+          "filename": "ff5-2-11.spc",
+          "name": "The Land Unknown",
+          "duration": 119,
+          "fade": 9310
+        },
+        {
+          "filename": "ff5-2-12.spc",
+          "name": "The Book of Sealings",
+          "duration": 84,
+          "fade": 4980
+        },
+        {
+          "filename": "ff5-2-13.spc",
+          "name": "Intension of the Earth",
+          "duration": 132,
+          "fade": 8109
+        },
+        {
+          "filename": "ff5-2-14.spc",
+          "name": "The Prelude of Empty Skies",
+          "duration": 199,
+          "fade": 5879
+        },
+        {
+          "filename": "ff5-2-15.spc",
+          "name": "Searching the Light",
+          "duration": 84,
+          "fade": 8419
+        },
+        {
+          "filename": "ff5-2-16.spc",
+          "name": "The Decisive Battle",
+          "duration": 336,
+          "fade": 6780
+        },
+        {
+          "filename": "ff5-2-17.spc",
+          "name": "The Last Battle",
+          "duration": 200,
+          "fade": 6799
+        },
+        {
+          "filename": "ff5-2-18.spc",
+          "name": "The Silent Beyond",
+          "duration": 327,
+          "fade": 21829
+        },
+        {
+          "filename": "ff5-2-19.spc",
+          "name": "Dear Friends",
+          "duration": 433,
+          "fade": 11189
+        },
+        {
+          "filename": "ff5-2-20.spc",
+          "name": "Final Fantasy",
+          "duration": 211,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-21.spc",
+          "name": "A New Origin",
+          "duration": 495,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-22.spc",
+          "name": "The Prelude",
+          "duration": 125,
+          "fade": 9070
+        },
+        {
+          "filename": "ff5-2-23.spc",
+          "name": "Fanfare 1",
+          "duration": 6,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-24.spc",
+          "name": "Fanfare 2",
+          "duration": 10,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-25.spc",
+          "name": "I'm a Dancer",
+          "duration": 15,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-26.spc",
+          "name": "Piano Lesson 1",
+          "duration": 10,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-27.spc",
+          "name": "Piano Lesson 2",
+          "duration": 12,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-28.spc",
+          "name": "Piano Lesson 3",
+          "duration": 11,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-29.spc",
+          "name": "Piano Lesson 4",
+          "duration": 25,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-30.spc",
+          "name": "Piano Lesson 5",
+          "duration": 7,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-31.spc",
+          "name": "Piano Lesson 6",
+          "duration": 8,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-32.spc",
+          "name": "Piano Lesson 7",
+          "duration": 6,
+          "fade": 10000
+        },
+        {
+          "filename": "ff5-2-33.spc",
+          "name": "Piano Lesson 8",
+          "duration": 12,
+          "fade": 10000
+        }
+      ]
+    },
+    {
+      "id": "Sangokushi_Eiketsu_Den",
+      "format": "spc",
+      "zipFile": "Sangokushi Eiketsu Den.zip",
+      "title": "Sangokushi Eiketsu Den",
+      "titleJp": "",
+      "system": "Super Nintendo",
+      "author": "Akinaga Yoshida",
+      "coverImage": "covers/Sangokushi_Eiketsu_Den.png",
+      "ogImage": "og-covers/Sangokushi_Eiketsu_Den.png",
+      "trackCount": 22,
+      "tracks": [
+        {
+          "filename": "eikt-01.spc",
+          "name": "Overture",
+          "duration": 103,
+          "fade": 10000
+        },
+        {
+          "filename": "eikt-02.spc",
+          "name": "Palace",
+          "duration": 119,
+          "fade": 9000
+        },
+        {
+          "filename": "eikt-03.spc",
+          "name": "Chapters",
+          "duration": 123,
+          "fade": 9000
+        },
+        {
+          "filename": "eikt-04.spc",
+          "name": "On the March 1",
+          "duration": 132,
+          "fade": 8000
+        },
+        {
+          "filename": "eikt-05.spc",
+          "name": "On the March 2",
+          "duration": 115,
+          "fade": 8000
+        },
+        {
+          "filename": "eikt-06.spc",
+          "name": "The Story Goes",
+          "duration": 120,
+          "fade": 7000
+        },
+        {
+          "filename": "eikt-07.spc",
+          "name": "War 1",
+          "duration": 162,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-08.spc",
+          "name": "War 2",
+          "duration": 180,
+          "fade": 10000
+        },
+        {
+          "filename": "eikt-09.spc",
+          "name": "War 3",
+          "duration": 161,
+          "fade": 9000
+        },
+        {
+          "filename": "eikt-10.spc",
+          "name": "War 4",
+          "duration": 159,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-11.spc",
+          "name": "War 5",
+          "duration": 171,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-12.spc",
+          "name": "War 6",
+          "duration": 178,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-13.spc",
+          "name": "War 7",
+          "duration": 170,
+          "fade": 8000
+        },
+        {
+          "filename": "eikt-14.spc",
+          "name": "Victory",
+          "duration": 129,
+          "fade": 8000
+        },
+        {
+          "filename": "eikt-15.spc",
+          "name": "Defeated",
+          "duration": 121,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-16.spc",
+          "name": "Duel",
+          "duration": 173,
+          "fade": 7000
+        },
+        {
+          "filename": "eikt-17.spc",
+          "name": "City",
+          "duration": 121,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-18.spc",
+          "name": "Shop",
+          "duration": 125,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-19.spc",
+          "name": "Mourning",
+          "duration": 128,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-20.spc",
+          "name": "Intermission",
+          "duration": 124,
+          "fade": 6000
+        },
+        {
+          "filename": "eikt-21.spc",
+          "name": "Song of Jing Zhou",
+          "duration": 121,
+          "fade": 11000
+        },
+        {
+          "filename": "eikt-22.spc",
+          "name": "Ending",
+          "duration": 146,
           "fade": 10000
         }
       ]
