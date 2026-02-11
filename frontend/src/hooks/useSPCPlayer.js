@@ -31,9 +31,11 @@ function loadSPCEngine() {
     script.onload = () => {
       const check = setInterval(() => {
         try {
+          // Must wait for calledRun - ensures .mem file is fully loaded
           if (typeof window._my_init === 'function' &&
               typeof window._my_decode === 'function' &&
-              window.HEAP16) {
+              window.HEAP16 &&
+              window.Module && window.Module.calledRun) {
             clearInterval(check)
 
             // Capture SPC engine into isolated object
