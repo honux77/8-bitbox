@@ -47,6 +47,9 @@ function createTextOverlaySvg(gameInfo) {
   const title = escapeXml(gameInfo?.title || 'Unknown Game')
   const titleJp = gameInfo?.titleJp && gameInfo.titleJp !== gameInfo.title ? escapeXml(gameInfo.titleJp) : ''
   const system = escapeXml(gameInfo?.system || 'Unknown')
+  const author = gameInfo?.author ? escapeXml(gameInfo.author) : ''
+  const trackCount = gameInfo?.trackCount || 0
+  const format = gameInfo?.format ? gameInfo.format.toUpperCase() : 'VGM'
 
   // Dynamic font size
   const rawTitle = gameInfo?.title || 'Unknown Game'
@@ -59,7 +62,7 @@ function createTextOverlaySvg(gameInfo) {
   const titleLines = wrapText(rawTitle, maxChars)
 
   // Title lines
-  let y = 160
+  let y = 140
   const titleEls = titleLines.slice(0, 3).map((line, i) => {
     const ly = y + i * (fontSize + 14)
     return `<text x="540" y="${ly}" font-family="'Press Start 2P', monospace" font-size="${fontSize}" fill="#00fff7" filter="url(#glow)">${escapeXml(line)}</text>`
@@ -72,11 +75,33 @@ function createTextOverlaySvg(gameInfo) {
     : ''
 
   // System badge
-  const badgeY = afterTitleY + (jpEl ? 44 : 16)
+  const badgeY = afterTitleY + (jpEl ? 40 : 16)
   const badgeW = system.length * 10.5 + 28
   const badgeEl = `
     <rect x="536" y="${badgeY - 18}" width="${badgeW}" height="30" rx="3" fill="rgba(0,255,0,0.08)" stroke="#00ff00" stroke-width="2"/>
     <text x="550" y="${badgeY}" font-family="'Press Start 2P', monospace" font-size="11" fill="#00ff00">${system}</text>`
+
+  // Metadata section (author, tracks, format)
+  let metaY = badgeY + 50
+  const metaEls = []
+  
+  if (author) {
+    const authorLines = wrapText(author, 55)
+    authorLines.slice(0, 2).forEach((line, i) => {
+      metaEls.push(`<text x="540" y="${metaY + i * 24}" font-family="'Press Start 2P', monospace" font-size="10" fill="#aaaacc">Composer: ${escapeXml(line)}</text>`)
+    })
+    metaY += authorLines.slice(0, 2).length * 24 + 8
+  }
+
+  if (trackCount > 0) {
+    metaEls.push(`<text x="540" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="10" fill="#aaaacc">${trackCount} Tracks</text>`)
+    metaY += 24
+  }
+
+  // Format badge (small)
+  const formatBadge = `
+    <rect x="536" y="${metaY - 16}" width="${format.length * 11 + 20}" height="24" rx="2" fill="rgba(255,0,255,0.08)" stroke="#ff00ff" stroke-width="1.5"/>
+    <text x="546" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="9" fill="#ff00ff">${format}</text>`
 
   // Branding
   const brandEl = `<text x="1150" y="590" text-anchor="end" font-family="'Press Start 2P', monospace" font-size="14" fill="#8888aa">&#9834; 9 Player</text>`
@@ -106,6 +131,8 @@ function createTextOverlaySvg(gameInfo) {
   ${titleEls}
   ${jpEl}
   ${badgeEl}
+  ${metaEls.join('\n  ')}
+  ${formatBadge}
   ${brandEl}
 </svg>`
 }
@@ -350,7 +377,14 @@ async function processZipFile(zipPath, gameId) {
       const ogFileName = `${gameId}.png`
       const ogFullPath = path.join(OG_COVERS_DIR, ogFileName)
 
-      const { resW, resH } = await createOGImage(coverImageData, gameInfo, ogFullPath)
+      // Add trackCount and format to gameInfo for OG image
+      const gameInfoWithMeta = {
+        ...gameInfo,
+        trackCount: tracks.length,
+        format: 'vgm'
+      }
+
+      const { resW, resH } = await createOGImage(coverImageData, gameInfoWithMeta, ogFullPath)
 
       ogImagePath = `og-covers/${ogFileName}`
       console.log(`  -> Generated OG image: ${ogFileName} (cover ${resW}x${resH})`)
@@ -459,7 +493,15 @@ async function processSPCZipFile(zipPath, gameId) {
     try {
       const ogFileName = `${gameId}.png`
       const ogFullPath = path.join(OG_COVERS_DIR, ogFileName)
-      const { resW, resH } = await createOGImage(coverImageData, gameInfo, ogFullPath)
+      
+      // Add trackCount and format to gameInfo for OG image
+      const gameInfoWithMeta = {
+        ...gameInfo,
+        trackCount: tracks.length,
+        format: 'spc'
+      }
+      
+      const { resW, resH } = await createOGImage(coverImageData, gameInfoWithMeta, ogFullPath)
       ogImagePath = `og-covers/${ogFileName}`
       console.log(`  -> Generated OG image: ${ogFileName} (cover ${resW}x${resH})`)
     } catch (e) {
