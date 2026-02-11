@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-11T01:20:34.524Z",
+  "generatedAt": "2026-02-11T01:43:37.858Z",
   "games": [
     {
       "id": "Daikoukai_Jidai__Sharp_X68000_",
@@ -630,6 +630,144 @@
           "filename": "49 Unused 5.vgz",
           "name": "Unused 5",
           "nameJp": ""
+        }
+      ]
+    },
+    {
+      "id": "Dragon_Warrior_II__NES_",
+      "zipFile": "Dragon_Warrior_II_(NES).zip",
+      "title": "Dragon Warrior II",
+      "titleJp": "ドラゴンクエストII 悪霊の神々",
+      "system": "Nintendo Entertainment System",
+      "author": "Koichi Sugiyama",
+      "coverImage": "covers/Dragon_Warrior_II__NES_.png",
+      "ogImage": "og-covers/Dragon_Warrior_II__NES_.png",
+      "trackCount": 25,
+      "tracks": [
+        {
+          "filename": "01 Overture.vgz",
+          "name": "Overture",
+          "nameJp": "序曲"
+        },
+        {
+          "filename": "02 Only Lonely Boy.vgz",
+          "name": "Only Lonely Boy",
+          "nameJp": "Love Song 探して"
+        },
+        {
+          "filename": "03 Chateau.vgz",
+          "name": "Chateau",
+          "nameJp": "王城"
+        },
+        {
+          "filename": "04 Distant Journey.vgz",
+          "name": "Distant Journey",
+          "nameJp": "遥かなる旅路"
+        },
+        {
+          "filename": "05 Deathfight.vgz",
+          "name": "Deathfight",
+          "nameJp": "戦い"
+        },
+        {
+          "filename": "06 Victory.vgz",
+          "name": "Victory",
+          "nameJp": "勝利"
+        },
+        {
+          "filename": "07 Level Up.vgz",
+          "name": "Level Up",
+          "nameJp": "レベル・アップ"
+        },
+        {
+          "filename": "08 Town.vgz",
+          "name": "Town",
+          "nameJp": "街の賑わい"
+        },
+        {
+          "filename": "09 Fright in Dungeon.vgz",
+          "name": "Fright in Dungeon",
+          "nameJp": "恐怖の地下洞"
+        },
+        {
+          "filename": "10 Encounter.vgz",
+          "name": "Encounter",
+          "nameJp": "出会い"
+        },
+        {
+          "filename": "11 Inn.vgz",
+          "name": "Inn",
+          "nameJp": "宿屋"
+        },
+        {
+          "filename": "12 Holy Shrine.vgz",
+          "name": "Holy Shrine",
+          "nameJp": "聖なるほこら"
+        },
+        {
+          "filename": "13 Requiem.vgz",
+          "name": "Requiem",
+          "nameJp": "レクイエム"
+        },
+        {
+          "filename": "14 Church.vgz",
+          "name": "Church",
+          "nameJp": "教会"
+        },
+        {
+          "filename": "15 Endless World.vgz",
+          "name": "Endless World",
+          "nameJp": "果てしなき世界"
+        },
+        {
+          "filename": "16 Devil's Tower.vgz",
+          "name": "Devil's Tower",
+          "nameJp": "魔の塔"
+        },
+        {
+          "filename": "17 Beyond the Waves.vgz",
+          "name": "Beyond the Waves",
+          "nameJp": "海原を行く"
+        },
+        {
+          "filename": "18 Unknown World.vgz",
+          "name": "Unknown World",
+          "nameJp": "広野を行く"
+        },
+        {
+          "filename": "19 Lottery Success.vgz",
+          "name": "Lottery Success",
+          "nameJp": "福引のあたり"
+        },
+        {
+          "filename": "20 Echoing Flute 1.vgz",
+          "name": "Echoing Flute 1",
+          "nameJp": "やまびこの笛1"
+        },
+        {
+          "filename": "21 Echoing Flute 2.vgz",
+          "name": "Echoing Flute 2",
+          "nameJp": "やまびこの笛2"
+        },
+        {
+          "filename": "22 Charm of Rubiss.vgz",
+          "name": "Charm of Rubiss",
+          "nameJp": "ルビスの守り"
+        },
+        {
+          "filename": "23 Curse.vgz",
+          "name": "Curse",
+          "nameJp": "呪"
+        },
+        {
+          "filename": "24 Dead or Alive.vgz",
+          "name": "Dead or Alive",
+          "nameJp": "死を賭して"
+        },
+        {
+          "filename": "25 My Road My Journey.vgz",
+          "name": "My Road My Journey",
+          "nameJp": "この道わが旅"
         }
       ]
     },
