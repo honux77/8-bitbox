@@ -13,10 +13,9 @@ const COVERS_DIR = path.join(OUTPUT_DIR, 'covers')
 const OG_COVERS_DIR = path.join(OUTPUT_DIR, 'og-covers')
 const MANIFEST_PATH = path.join(OUTPUT_DIR, 'manifest.json')
 
-// OG image dimensions (Facebook/Twitter recommended)
-const OG_WIDTH = 1200
-const OG_HEIGHT = 630
-const OG_BG_COLOR = '#1a1a2e' // Match app background
+// OG image dimensions (test: 640x480 full cover)
+const OG_WIDTH = 640
+const OG_HEIGHT = 480
 
 async function parseVGMTitle(buffer) {
   // VGM file header parsing for GD3 tag
@@ -143,46 +142,18 @@ async function processZipFile(zipPath, gameId) {
     coverImagePath = `covers/${coverFileName}`
     console.log(`  -> Extracted cover image: ${coverFileName}`)
 
-    // Generate OG image (1200x630) with cover centered on dark background
+    // Generate OG image (640x480) with cover stretched to fill
     try {
       const ogFileName = `${gameId}.png`
       const ogFullPath = path.join(OG_COVERS_DIR, ogFileName)
 
-      // Get original image metadata
-      const metadata = await sharp(coverImageData).metadata()
-      const origWidth = metadata.width || 400
-      const origHeight = metadata.height || 400
-
-      // Calculate resize dimensions to fit within OG image (with padding)
-      const maxCoverHeight = OG_HEIGHT - 80 // 40px padding top/bottom
-      const maxCoverWidth = OG_WIDTH - 100 // 50px padding left/right
-      const scale = Math.min(maxCoverWidth / origWidth, maxCoverHeight / origHeight, 2) // Max 2x upscale
-      const resizedWidth = Math.round(origWidth * scale)
-      const resizedHeight = Math.round(origHeight * scale)
-
-      // Create OG image with cover centered
-      await sharp({
-        create: {
-          width: OG_WIDTH,
-          height: OG_HEIGHT,
-          channels: 4,
-          background: OG_BG_COLOR
-        }
-      })
-        .composite([
-          {
-            input: await sharp(coverImageData)
-              .resize(resizedWidth, resizedHeight, { fit: 'inside' })
-              .png()
-              .toBuffer(),
-            gravity: 'center'
-          }
-        ])
+      await sharp(coverImageData)
+        .resize(OG_WIDTH, OG_HEIGHT, { fit: 'fill' })
         .png()
         .toFile(ogFullPath)
 
       ogImagePath = `og-covers/${ogFileName}`
-      console.log(`  -> Generated OG image: ${ogFileName} (${resizedWidth}x${resizedHeight})`)
+      console.log(`  -> Generated OG image: ${ogFileName} (${OG_WIDTH}x${OG_HEIGHT} fill)`)
     } catch (e) {
       console.log(`  -> Failed to generate OG image: ${e.message}`)
     }
