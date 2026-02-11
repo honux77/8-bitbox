@@ -124,14 +124,9 @@ function App() {
     return true
   })
 
-  // Sort games with favorites first
-  const sortedGames = [...filteredGames].sort((a, b) => {
-    const aFav = favorites.includes(a.id)
-    const bFav = favorites.includes(b.id)
-    if (aFav && !bFav) return -1
-    if (!aFav && bFav) return 1
-    return 0
-  })
+  // In ALL mode, keep original order so cards don't jump when toggling favorites.
+  // In FAVORITES mode, no sort needed since all items are already favorites.
+  const sortedGames = filteredGames
 
   // PWA install prompt
   useEffect(() => {
