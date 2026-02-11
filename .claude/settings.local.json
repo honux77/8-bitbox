@@ -42,7 +42,19 @@
       "Bash(npx sharp-cli:*)",
       "Bash(node -e:*)",
       "Bash(npm ls:*)",
-      "Bash(fc-list:*)"
+      "Bash(fc-list:*)",
+      "WebFetch(domain:snesmusic.org)",
+      "Bash(unzip:*)",
+      "Bash(dir:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:nicknassar.github.io)",
+      "WebFetch(domain:cosinusoidally.github.io)",
+      "Bash(node scripts/generate-manifest.js:*)",
+      "Bash(npx vite build)",
+      "Bash(git status:*)"
     ]
   }
 }
