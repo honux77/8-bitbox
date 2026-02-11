@@ -225,6 +225,8 @@ async function processZipFile(zipPath, gameId) {
   let gameInfo = null
   let coverImageData = null
   let coverImageExt = null
+  let hasSpecialChars = false
+  const filesToRename = []
 
   for (const [filename, file] of Object.entries(zip.files)) {
     if (file.dir) continue
@@ -254,8 +256,37 @@ async function processZipFile(zipPath, gameId) {
 
       const vgmInfo = await parseVGMTitle(buffer)
 
+      // Check for special characters (non-ASCII)
+      const hasNonAscii = /[^\x00-\x7F]/.test(filename)
+      let sanitizedFilename = filename
+      
+      if (hasNonAscii) {
+        // Normalize special characters with comprehensive replacement
+        sanitizedFilename = filename
+          // Handle common accented characters
+          .replace(/[êéèëē]/gi, 'e')
+          .replace(/[àáâãäåā]/gi, 'a')
+          .replace(/[ìíîïī]/gi, 'i')
+          .replace(/[òóôõöō]/gi, 'o')
+          .replace(/[ùúûüū]/gi, 'u')
+          .replace(/[ñ]/gi, 'n')
+          .replace(/[ç]/gi, 'c')
+          .replace(/[ÿý]/gi, 'y')
+          // NFD normalization
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          // Handle special cases that might have become corrupted
+          .replace(/M[^a-zA-Z\s]*l[^a-zA-Z\s]*e/gi, 'Melee') // Fix Mêlée -> Melee
+          // Remove any remaining non-ASCII
+          .replace(/[^\x00-\x7F]/g, '')
+        
+        hasSpecialChars = true
+        filesToRename.push({ original: filename, sanitized: sanitizedFilename })
+        console.log(`  ⚠ Special chars detected: "${filename}" -> "${sanitizedFilename}"`)
+      }
+
       tracks.push({
-        filename,
+        filename: sanitizedFilename,
         name: vgmInfo?.trackNameEn || vgmInfo?.trackNameJp || path.basename(filename, path.extname(filename)),
         nameJp: vgmInfo?.trackNameJp || ''
       })
@@ -270,6 +301,37 @@ async function processZipFile(zipPath, gameId) {
         }
       }
     }
+  }
+
+  // If special characters were found, create a fixed ZIP file
+  if (hasSpecialChars && filesToRename.length > 0) {
+    console.log(`  🔧 Fixing ZIP file with ${filesToRename.length} renamed files...`)
+    
+    const newZip = new JSZip()
+    
+    // Copy all files with corrected names
+    for (const [filename, file] of Object.entries(zip.files)) {
+      if (file.dir) continue
+      
+      const renamed = filesToRename.find(f => f.original === filename)
+      const newName = renamed ? renamed.sanitized : filename
+      
+      const content = await file.async('uint8array')
+      newZip.file(newName, content)
+    }
+    
+    // Generate new ZIP
+    const newZipData = await newZip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' })
+    
+    // Backup original and save fixed version
+    const backupPath = zipPath.replace('.zip', '_backup.zip')
+    if (!fs.existsSync(backupPath)) {
+      fs.copyFileSync(zipPath, backupPath)
+      console.log(`  ✓ Original backed up to: ${path.basename(backupPath)}`)
+    }
+    
+    fs.writeFileSync(zipPath, newZipData)
+    console.log(`  ✓ ZIP file fixed and saved`)
   }
 
   // Save cover image if found
