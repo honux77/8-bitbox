@@ -68,40 +68,43 @@ function createTextOverlaySvg(gameInfo) {
     return `<text x="540" y="${ly}" font-family="'Press Start 2P', monospace" font-size="${fontSize}" fill="#00fff7" filter="url(#glow)">${escapeXml(line)}</text>`
   }).join('\n    ')
 
-  // Japanese title
-  const afterTitleY = y + titleLines.slice(0, 3).length * (fontSize + 14) + 16
-  const jpEl = titleJp
-    ? `<text x="540" y="${afterTitleY}" font-family="'Meiryo', 'Yu Gothic', sans-serif" font-size="16" fill="#ffff00" opacity="0.85">${titleJp}</text>`
-    : ''
-
-  // System badge
-  const badgeY = afterTitleY + (jpEl ? 40 : 16)
-  const badgeW = system.length * 10.5 + 28
-  const badgeEl = `
-    <rect x="536" y="${badgeY - 18}" width="${badgeW}" height="30" rx="3" fill="rgba(0,255,0,0.08)" stroke="#00ff00" stroke-width="2"/>
-    <text x="550" y="${badgeY}" font-family="'Press Start 2P', monospace" font-size="11" fill="#00ff00">${system}</text>`
-
-  // Metadata section (author, tracks, format)
-  let metaY = badgeY + 50
+  // Metadata layout: Track → Japanese title → Composer → System badge → Format badge
+  let metaY = y + titleLines.slice(0, 3).length * (fontSize + 14) + 24
   const metaEls = []
-  
-  if (author) {
-    const authorLines = wrapText(author, 55)
-    authorLines.slice(0, 2).forEach((line, i) => {
-      metaEls.push(`<text x="540" y="${metaY + i * 24}" font-family="'Press Start 2P', monospace" font-size="10" fill="#aaaacc">Composer: ${escapeXml(line)}</text>`)
-    })
-    metaY += authorLines.slice(0, 2).length * 24 + 8
-  }
 
+  // 1. Track count (40px)
   if (trackCount > 0) {
-    metaEls.push(`<text x="540" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="10" fill="#aaaacc">${trackCount} Tracks</text>`)
-    metaY += 24
+    metaEls.push(`<text x="540" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="40" fill="#aaaacc">${trackCount} Tracks</text>`)
+    metaY += 60
   }
 
-  // Format badge (small)
+  // 2. Japanese title (35px)
+  const jpEl = ''
+  if (titleJp) {
+    metaEls.push(`<text x="540" y="${metaY}" font-family="'Meiryo', 'Yu Gothic', sans-serif" font-size="35" fill="#ffff00" opacity="0.85">${titleJp}</text>`)
+    metaY += 52
+  }
+
+  // 3. Composer (40px)
+  if (author) {
+    const authorLines = wrapText(author, 18)
+    authorLines.slice(0, 2).forEach((line, i) => {
+      metaEls.push(`<text x="540" y="${metaY + i * 52}" font-family="'Press Start 2P', monospace" font-size="40" fill="#aaaacc">${escapeXml(line)}</text>`)
+    })
+    metaY += authorLines.slice(0, 2).length * 52 + 14
+  }
+
+  // 4. System badge (30px)
+  const badgeW = system.length * 28 + 44
+  const badgeEl = `
+    <rect x="534" y="${metaY - 34}" width="${badgeW}" height="52" rx="4" fill="rgba(0,255,0,0.08)" stroke="#00ff00" stroke-width="2"/>
+    <text x="556" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="30" fill="#00ff00">${system}</text>`
+  metaY += 66
+
+  // 5. Format badge (25px)
   const formatBadge = `
-    <rect x="536" y="${metaY - 16}" width="${format.length * 11 + 20}" height="24" rx="2" fill="rgba(255,0,255,0.08)" stroke="#ff00ff" stroke-width="1.5"/>
-    <text x="546" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="9" fill="#ff00ff">${format}</text>`
+    <rect x="534" y="${metaY - 30}" width="${format.length * 24 + 34}" height="44" rx="3" fill="rgba(255,0,255,0.08)" stroke="#ff00ff" stroke-width="2"/>
+    <text x="551" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="25" fill="#ff00ff">${format}</text>`
 
   // Branding
   const brandEl = `<text x="1150" y="590" text-anchor="end" font-family="'Press Start 2P', monospace" font-size="14" fill="#8888aa">&#9834; 9 Player</text>`
@@ -129,9 +132,8 @@ function createTextOverlaySvg(gameInfo) {
   </defs>
   ${lines}
   ${titleEls}
-  ${jpEl}
-  ${badgeEl}
   ${metaEls.join('\n  ')}
+  ${badgeEl}
   ${formatBadge}
   ${brandEl}
 </svg>`
