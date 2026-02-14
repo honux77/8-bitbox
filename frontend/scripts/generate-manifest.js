@@ -204,7 +204,7 @@ function createTextOverlaySvg(gameInfo) {
     <text x="551" y="${metaY}" font-family="'Press Start 2P', monospace" font-size="25" fill="#ff00ff">${format}</text>`
 
   // Branding
-  const brandEl = `<text x="1150" y="590" text-anchor="end" font-family="'Press Start 2P', monospace" font-size="14" fill="#8888aa">&#9834; 9 Player</text>`
+  const brandEl = `<text x="1150" y="590" text-anchor="end" font-family="'Press Start 2P', monospace" font-size="14" fill="#8888aa">&#9834; 8-bitbox</text>`
 
   // Accent lines
   const lines = `

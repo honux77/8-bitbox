@@ -280,12 +280,12 @@ function App() {
     <div className="app">
       <header className="header">
         <img
-          src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2F9-player.vercel.app&label=VISITORS&labelColor=%231a1a2e&countColor=%2300e5ff"
+          src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2F9-player.pages.dev&label=VISITORS&labelColor=%231a1a2e&countColor=%2300e5ff"
           alt="visitor count"
           className="visitor-counter"
         />
         <div className="title-row">
-          <h1 className="title">NINE-PLAYER</h1>
+          <h1 className="title">8-BITBOX</h1>
           <div className="header-buttons">
             {installPrompt && (
               <button className="install-button" onClick={handleInstall}>
@@ -510,7 +510,7 @@ function App() {
             <div className="help-section">
               <h3>ABOUT</h3>
               <p className="help-about">
-                9-Player plays retro video game music in your browser.
+                8-bitbox plays retro video game music in your browser.
                 Background playback supported on mobile.
               </p>
             </div>

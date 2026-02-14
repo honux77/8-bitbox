@@ -233,7 +233,7 @@ export function useM4APlayer() {
         navigator.mediaSession.metadata = new window.MediaMetadata({
           title: trackInfo.title,
           artist: trackInfo.author || 'Unknown Artist',
-          album: trackInfo.game || '9-Player Music Archive',
+          album: trackInfo.game || '8-bitbox',
           artwork
         })
       }

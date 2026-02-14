@@ -17,8 +17,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['vite.svg'],
       manifest: {
-        name: '9-Player (舊-Player)',
-        short_name: '9-Player',
+        name: '8-bitbox',
+        short_name: '8-bitbox',
         description: '옛것을 플레이하다 - 브라우저에서 레트로 게임 음악을 재생하는 모던 웹 플레이어',
         theme_color: '#1a1a2e',
         background_color: '#1a1a2e',
@@ -48,7 +48,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/9-player\.vercel\.app\/dist\/.*/i,
+            urlPattern: /^https:\/\/9-player\.pages\.dev\/dist\/.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'music-cache',

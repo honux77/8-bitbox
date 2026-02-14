@@ -28,11 +28,11 @@ export default async function middleware(request) {
 
     const game = manifest.games.find(g => g.id === gameId)
     if (game) {
-      let title = `${game.title} - 9 Player`
+      let title = `${game.title} - 8-bitbox`
       let description = `${game.system} | ${game.trackCount} tracks`
 
       // Use OG image if available, fallback to cover, then default
-      const baseUrl = 'https://9-player.vercel.app'
+      const baseUrl = 'https://9-player.pages.dev'
       let imageUrl = game.ogImage
         ? `${baseUrl}/music/${game.ogImage}`
         : game.coverImage
@@ -42,7 +42,7 @@ export default async function middleware(request) {
       if (trackName) {
         const track = game.tracks?.find(t => t.name === trackName)
         if (track) {
-          title = `${track.name} - ${game.title} | 9 Player`
+          title = `${track.name} - ${game.title} | 8-bitbox`
           description = `${game.author || game.system} | ${game.title}`
         }
       }
