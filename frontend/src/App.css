@@ -219,6 +219,7 @@
       0 0 20px var(--accent-cyan),
       4px 4px 0 #000;
   }
+
   to {
     text-shadow:
       0 0 20px var(--accent-cyan),
@@ -249,7 +250,7 @@
 /* Game Selection */
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
   max-width: 1200px;
   width: 100%;
@@ -273,12 +274,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,0.1) 0%,
-    transparent 50%,
-    rgba(0,0,0,0.2) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%,
+      rgba(0, 0, 0, 0.2) 100%);
   pointer-events: none;
 }
 
@@ -416,14 +415,12 @@
   width: 100%;
   max-width: 600px;
   height: 4px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--accent-orange),
-    var(--accent-yellow),
-    var(--accent-orange),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      var(--accent-orange),
+      var(--accent-yellow),
+      var(--accent-orange),
+      transparent);
   margin: 0 auto 20px;
 }
 
@@ -579,7 +576,9 @@
 }
 
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Loading */
@@ -618,9 +617,17 @@
 }
 
 @keyframes loading {
-  0% { width: 0%; }
-  50% { width: 100%; }
-  100% { width: 0%; }
+  0% {
+    width: 0%;
+  }
+
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0%;
+  }
 }
 
 /* Empty State */
@@ -686,7 +693,7 @@
   }
 
   .game-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
   }
 
