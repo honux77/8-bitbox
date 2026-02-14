@@ -478,6 +478,8 @@ function App() {
               onToggleRepeat={player.toggleRepeatMode}
               shuffle={player.shuffle}
               onToggleShuffle={player.toggleShuffle}
+              volume={player.volume}
+              onVolumeChange={player.setVolume}
               frequencyData={player.frequencyData}
             />
           </>

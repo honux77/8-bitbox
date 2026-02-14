@@ -54,7 +54,17 @@
       "WebFetch(domain:cosinusoidally.github.io)",
       "Bash(node scripts/generate-manifest.js:*)",
       "Bash(npx vite build)",
-      "Bash(git status:*)"
+      "Bash(git status:*)",
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(lsof:*)",
+      "Bash(find:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(git rm:*)",
+      "Bash(xargs -d '\\\\n' git rm --cached)",
+      "Bash(xargs:*)",
+      "Bash(git -C /Users/honux/HobbyProjects/9-player status:*)",
+      "Bash(grep:*)"
     ]
   }
 }

@@ -28,7 +28,9 @@ export function Player({
   repeatMode,
   onToggleRepeat,
   shuffle,
-  onToggleShuffle
+  onToggleShuffle,
+  volume = 0.8,
+  onVolumeChange
 }) {
   const remaining = Math.max(0, duration - elapsed)
   const progress = duration > 0 ? (elapsed / duration) * 100 : 0
@@ -37,6 +39,8 @@ export function Player({
   const [isImageExpanded, setIsImageExpanded] = useState(false)
   const [expandedImageSize, setExpandedImageSize] = useState({ width: 0, height: 0 })
   const [toastMessage, setToastMessage] = useState(null)
+  const [isMuted, setIsMuted] = useState(false)
+  const [volumeBeforeMute, setVolumeBeforeMute] = useState(0.8)
 
   // Copy current URL to clipboard
   const handleShare = async () => {
@@ -198,6 +202,39 @@ export function Player({
         <button className="control-btn share-btn" onClick={handleShare} title="Share URL">
           🔗
         </button>
+      </div>
+
+      {/* Volume Control */}
+      <div className="volume-control">
+        <button
+          className="volume-icon"
+          onClick={() => {
+            if (isMuted) {
+              setIsMuted(false)
+              onVolumeChange?.(volumeBeforeMute)
+            } else {
+              setVolumeBeforeMute(volume)
+              setIsMuted(true)
+              onVolumeChange?.(0)
+            }
+          }}
+          title={isMuted ? 'Unmute' : 'Mute'}
+        >
+          {isMuted || volume === 0 ? '🔇' : volume < 0.5 ? '🔈' : '🔊'}
+        </button>
+        <div
+          className="volume-bar"
+          onClick={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect()
+            const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+            onVolumeChange?.(ratio)
+            setIsMuted(false)
+          }}
+        >
+          <div className="volume-fill" style={{ width: `${(isMuted ? 0 : volume) * 100}%` }} />
+          <div className="volume-handle" style={{ left: `${(isMuted ? 0 : volume) * 100}%` }} />
+        </div>
+        <span className="volume-percent">{Math.round((isMuted ? 0 : volume) * 100)}%</span>
       </div>
 
       {/* Toast Message */}

@@ -11,12 +11,14 @@ export function useM4APlayer() {
   const [elapsed, setElapsed] = useState(0)
   const [repeatMode, setRepeatMode] = useState('all') // 'off' | 'all' | 'one'
   const [shuffle, setShuffle] = useState(false)
+  const [volume, setVolumeState] = useState(0.8)
 
   const audioRef = useRef(null)
   const rafRef = useRef(null)
   const nextTrackRef = useRef(null)
   const repeatModeRef = useRef('all')
   const shuffleRef = useRef(false)
+  const volumeRef = useRef(0.8)
   const selectedGameRef = useRef(null)
   const binsRef = useRef(new Array(16).fill(0))
 
@@ -122,6 +124,7 @@ export function useM4APlayer() {
     // Plain HTML5 Audio - no Web Audio API, so it plays in background
     const audio = new Audio(`/music/${track.path}`)
     audio.preload = 'auto'
+    audio.volume = volumeRef.current
 
     audio.ontimeupdate = () => {
       setElapsed(audio.currentTime)
@@ -254,6 +257,15 @@ export function useM4APlayer() {
     nextTrackRef.current = nextTrack
   }, [nextTrack])
 
+  const setVolume = useCallback((v) => {
+    const clamped = Math.max(0, Math.min(1, v))
+    volumeRef.current = clamped
+    setVolumeState(clamped)
+    if (audioRef.current) {
+      audioRef.current.volume = clamped
+    }
+  }, [])
+
   // No-op: AudioContext is no longer used, but keep interface for App.jsx
   const resumeAudio = useCallback(() => {}, [])
 
@@ -328,6 +340,8 @@ export function useM4APlayer() {
     toggleRepeatMode,
     shuffle,
     toggleShuffle,
+    volume,
+    setVolume,
     resumeAudio
   }
 }
