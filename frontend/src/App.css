@@ -664,3 +664,49 @@
   color: var(--accent-yellow);
   text-shadow: 2px 2px 0 #000;
 }
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .header {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  .main-content {
+    padding: 20px 12px;
+  }
+
+  .game-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .back-button {
+    font-size: 8px;
+    padding: 8px 10px;
+    margin-right: 10px;
+  }
+
+  .current-game-title {
+    font-size: 10px;
+  }
+
+  .filter-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    font-size: 7px;
+    padding: 6px 12px;
+  }
+}

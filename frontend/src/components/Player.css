@@ -470,3 +470,61 @@
   color: var(--text-secondary);
   flex-shrink: 0;
 }
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .player-container {
+    padding: 10px;
+    border-width: 3px;
+  }
+
+  .now-playing {
+    padding: 10px;
+  }
+
+  .cover-image {
+    width: 110px;
+    height: 110px;
+  }
+
+  .track-title {
+    font-size: 10px;
+  }
+
+  .track-system,
+  .track-author {
+    font-size: 7px;
+  }
+
+  .track-time {
+    font-size: 8px;
+  }
+
+  .controls {
+    gap: 8px;
+  }
+
+  .control-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .play-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 18px;
+  }
+
+  .visualizer {
+    height: 80px;
+  }
+
+  .track-list-scroll {
+    max-height: 180px;
+  }
+
+  .track-name {
+    font-size: 8px;
+  }
+}

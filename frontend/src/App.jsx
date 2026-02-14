@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useVGMPlayer } from './hooks/useVGMPlayer'
-import { useSPCPlayer } from './hooks/useSPCPlayer'
+import { useM4APlayer } from './hooks/useM4APlayer'
 import { Player } from './components/Player'
 import './App.css'
 
@@ -82,8 +81,6 @@ function App() {
   const [screen, setScreen] = useState('loading') // loading, start, select, player
   const [games, setGames] = useState([])
   const [selectedGame, setSelectedGame] = useState(null)
-  const [loadingGame, setLoadingGame] = useState(false)
-  const [loadingProgress, setLoadingProgress] = useState(null) // { percent, message }
   const [error, setError] = useState(null)
   const [installPrompt, setInstallPrompt] = useState(null)
   const [favorites, setFavorites] = useState(loadFavorites)
@@ -92,10 +89,7 @@ function App() {
   const [showHelp, setShowHelp] = useState(false)
   const initialHashHandled = useRef(false)
 
-  const vgmPlayer = useVGMPlayer()
-  const spcPlayer = useSPCPlayer()
-  const activeFormatRef = useRef('vgm')
-  const player = activeFormatRef.current === 'spc' ? spcPlayer : vgmPlayer
+  const player = useM4APlayer()
 
   // Toggle favorite status
   const toggleFavorite = useCallback((e, gameId) => {
@@ -138,11 +132,6 @@ function App() {
     return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
-  // Get the right player for a game's format
-  const getPlayerForGame = useCallback((game) => {
-    return (game?.format === 'spc') ? spcPlayer : vgmPlayer
-  }, [spcPlayer, vgmPlayer])
-
   // Handle initial hash navigation (play from URL hash)
   const handleHashNavigation = useCallback(async (gamesData, hashInfo) => {
     if (!hashInfo || !hashInfo.gameId) return false
@@ -150,18 +139,10 @@ function App() {
     const game = gamesData.find(g => g.id === hashInfo.gameId)
     if (!game) return false
 
-    const targetPlayer = getPlayerForGame(game)
-    if (!targetPlayer.isReady) return false
-
-    activeFormatRef.current = game.format || 'vgm'
     setSelectedGame(game)
-    setLoadingGame(true)
-    setLoadingProgress({ percent: 0, message: 'LOADING...' })
     setScreen('player')
 
-    const tracks = await targetPlayer.loadZip(`/music/${game.zipFile}`, setLoadingProgress)
-    setLoadingGame(false)
-    setLoadingProgress(null)
+    const tracks = player.loadGame(game)
 
     if (tracks && tracks.length > 0) {
       let trackIndex = 0
@@ -169,10 +150,10 @@ function App() {
         const foundIndex = tracks.findIndex(t => t.name === hashInfo.trackName)
         if (foundIndex !== -1) trackIndex = foundIndex
       }
-      setTimeout(() => targetPlayer.play(trackIndex, tracks), 100)
+      setTimeout(() => player.play(trackIndex, tracks), 100)
     }
     return true
-  }, [getPlayerForGame])
+  }, [player])
 
   // Load manifest
   useEffect(() => {
@@ -192,7 +173,7 @@ function App() {
       })
   }, [])
 
-  // Handle hash navigation when player is ready and games are loaded
+  // Handle hash navigation when games are loaded (player is always ready)
   useEffect(() => {
     if (games.length === 0 || initialHashHandled.current) return
 
@@ -202,18 +183,9 @@ function App() {
       return
     }
 
-    // Wait for the right player to be ready
-    const game = games.find(g => g.id === hashInfo.gameId)
-    if (!game) {
-      initialHashHandled.current = true
-      return
-    }
-    const targetPlayer = getPlayerForGame(game)
-    if (!targetPlayer.isReady) return
-
     initialHashHandled.current = true
     handleHashNavigation(games, hashInfo)
-  }, [vgmPlayer.isReady, spcPlayer.isReady, games, handleHashNavigation, getPlayerForGame])
+  }, [games, handleHashNavigation])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -235,8 +207,7 @@ function App() {
           player.stop()
           break
         case 'Escape':
-          vgmPlayer.stop()
-          spcPlayer.stop()
+          player.stop()
           setScreen('select')
           setSelectedGame(null)
           setUrlParams(null, null)
@@ -252,32 +223,20 @@ function App() {
     setScreen('select')
   }
 
-  const handleGameSelect = async (game) => {
-    // Stop other player if switching formats
-    const newFormat = game.format || 'vgm'
-    if (newFormat !== activeFormatRef.current) {
-      player.stop()
-    }
-    activeFormatRef.current = newFormat
-
-    const targetPlayer = getPlayerForGame(game)
+  const handleGameSelect = (game) => {
+    player.stop()
 
     // Unlock AudioContext synchronously while still in user-gesture context.
-    // Mobile browsers block AudioContext.resume() after async boundaries.
-    targetPlayer.resumeAudio()
+    player.resumeAudio()
 
     setSelectedGame(game)
-    setLoadingGame(true)
-    setLoadingProgress({ percent: 0, message: 'LOADING...' })
     setScreen('player')
 
-    const tracks = await targetPlayer.loadZip(`/music/${game.zipFile}`, setLoadingProgress)
-    setLoadingGame(false)
-    setLoadingProgress(null)
+    const tracks = player.loadGame(game)
 
     if (tracks && tracks.length > 0) {
       setTimeout(() => {
-        targetPlayer.play(0, tracks)
+        player.play(0, tracks)
         setUrlParams(game.id, tracks[0].name)
       }, 100)
     }
@@ -292,8 +251,7 @@ function App() {
   }, [player, selectedGame])
 
   const handleBack = () => {
-    vgmPlayer.stop()
-    spcPlayer.stop()
+    player.stop()
     setScreen('select')
     setSelectedGame(null)
     setUrlParams(null, null) // Clear hash
@@ -369,15 +327,6 @@ function App() {
             }}>
               SPACE: PLAY/PAUSE | N: NEXT | P: PREV | ESC: BACK
             </p>
-            {!vgmPlayer.isReady && !spcPlayer.isReady && (
-              <p style={{
-                marginTop: '20px',
-                fontSize: '8px',
-                color: 'var(--accent-yellow)',
-              }}>
-                INITIALIZING AUDIO ENGINE...
-              </p>
-            )}
             {error && (
               <p style={{
                 marginTop: '20px',
@@ -427,14 +376,7 @@ function App() {
               </div>
             </div>
 
-            {!vgmPlayer.isReady && !spcPlayer.isReady ? (
-              <div className="loading">
-                <p className="loading-text">LOADING ENGINE...</p>
-                <div className="loading-bar">
-                  <div className="loading-progress"></div>
-                </div>
-              </div>
-            ) : games.length === 0 ? (
+            {games.length === 0 ? (
               <div className="empty-state">
                 <div className="empty-icon">📁</div>
                 <p className="empty-text">NO MUSIC FOUND<br />ADD ZIP FILES TO DIST FOLDER</p>
@@ -516,32 +458,23 @@ function App() {
               </span>
             </div>
 
-            {loadingGame ? (
-              <div className="loading">
-                <p className="loading-text">{loadingProgress?.message || 'LOADING TRACKS...'}</p>
-                <div className="loading-bar">
-                  <div className="loading-progress real" style={{ width: `${loadingProgress?.percent || 0}%` }}></div>
-                </div>
-              </div>
-            ) : (
-              <Player
-                isPlaying={player.isPlaying}
-                trackInfo={player.trackInfo}
-                trackList={player.trackList}
-                currentTrackIndex={player.currentTrackIndex}
-                coverImage={selectedGame?.coverImage}
-                gameAuthor={selectedGame?.author}
-                gameSystem={selectedGame?.system}
-                elapsed={player.elapsed}
-                duration={player.currentTrack?.length || 0}
-                onTogglePlayback={player.togglePlayback}
-                onNext={player.nextTrack}
-                onPrev={player.prevTrack}
-                onStop={player.stop}
-                onSelectTrack={handleSelectTrack}
-                frequencyData={player.frequencyData}
-              />
-            )}
+            <Player
+              isPlaying={player.isPlaying}
+              trackInfo={player.trackInfo}
+              trackList={player.trackList}
+              currentTrackIndex={player.currentTrackIndex}
+              coverImage={selectedGame?.coverImage}
+              gameAuthor={selectedGame?.author}
+              gameSystem={selectedGame?.system}
+              elapsed={player.elapsed}
+              duration={player.currentTrack?.length || 0}
+              onTogglePlayback={player.togglePlayback}
+              onNext={player.nextTrack}
+              onPrev={player.prevTrack}
+              onStop={player.stop}
+              onSelectTrack={handleSelectTrack}
+              frequencyData={player.frequencyData}
+            />
           </>
         )}
       </main>
@@ -577,8 +510,8 @@ function App() {
             <div className="help-section">
               <h3>ABOUT</h3>
               <p className="help-about">
-                9-Player plays retro video game music (VGM/SPC) in your browser.
-                Powered by VGMPlay + snes_spc + Emscripten.
+                9-Player plays retro video game music in your browser.
+                Background playback supported on mobile.
               </p>
             </div>
           </div>
@@ -587,16 +520,7 @@ function App() {
 
       <footer className="footer">
         <p className="footer-text">
-          POWERED BY{' '}
-          <a
-            href="https://github.com/vgmrips/vgmplay"
-            className="footer-link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            VGMPLAY
-          </a>
-          {' '}| BUILT WITH EMSCRIPTEN + REACT
+          BUILT WITH REACT | BACKGROUND PLAYBACK ENABLED
         </p>
       </footer>
     </div>

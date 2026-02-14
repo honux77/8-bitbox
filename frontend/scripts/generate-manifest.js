@@ -1,8 +1,10 @@
 import fs from 'fs'
+import os from 'os'
 import path from 'path'
 import JSZip from 'jszip'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
+import { spawn } from 'child_process'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -13,6 +15,8 @@ const OUTPUT_DIR = path.join(__dirname, '../public/music')
 const COVERS_DIR = path.join(OUTPUT_DIR, 'covers')
 const OG_COVERS_DIR = path.join(OUTPUT_DIR, 'og-covers')
 const MANIFEST_PATH = path.join(OUTPUT_DIR, 'manifest.json')
+const AUDIO_BITRATE = '192k'
+const TOOL_PATHS = {}
 
 // OG image dimensions (Facebook/Twitter recommended)
 const OG_WIDTH = 1200
@@ -41,6 +45,99 @@ function wrapText(text, maxChars) {
   }
   if (line) lines.push(line)
   return lines
+}
+
+function sanitizeForPath(input) {
+  return input
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s\-().]/g, '')
+    .replace(/\s+/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '')
+}
+
+function runCommand(cmd, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(cmd, args, { stdio: ['ignore', 'pipe', 'pipe'] })
+    let stdout = ''
+    let stderr = ''
+
+    child.stdout.on('data', (data) => { stdout += data.toString() })
+    child.stderr.on('data', (data) => { stderr += data.toString() })
+    child.on('error', reject)
+    child.on('close', (code) => {
+      if (code === 0) {
+        resolve({ stdout, stderr })
+      } else {
+        reject(new Error(`${cmd} failed (${code}): ${stderr || stdout}`))
+      }
+    })
+  })
+}
+
+function resolveCommand(command, extraCandidates = []) {
+  const candidates = [command, ...extraCandidates]
+
+  const pathDirs = (process.env.PATH || '')
+    .split(path.delimiter)
+    .filter(Boolean)
+
+  for (const candidate of candidates) {
+    if (!candidate) continue
+    if (candidate.includes('/') && fs.existsSync(candidate)) {
+      return candidate
+    }
+    for (const dir of pathDirs) {
+      const fullPath = path.join(dir, candidate)
+      if (fs.existsSync(fullPath)) {
+        return fullPath
+      }
+    }
+  }
+
+  return null
+}
+
+async function ensureCommand(command, args = ['-h']) {
+  if (TOOL_PATHS[command]) return TOOL_PATHS[command]
+
+  const resolved = resolveCommand(command, [
+    `/opt/homebrew/bin/${command}`,
+    `/usr/local/bin/${command}`
+  ])
+  if (!resolved) {
+    throw new Error(`Required command not found: ${command}`)
+  }
+
+  TOOL_PATHS[command] = resolved
+  return resolved
+}
+
+async function convertVgmBufferToM4A(buffer, extension, outputFilePath) {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'manifest-vgm-'))
+  const inputPath = path.join(tempDir, `track.${extension}`)
+  const wavPath = path.join(tempDir, 'track.wav')
+  try {
+    fs.writeFileSync(inputPath, buffer)
+    await runCommand(TOOL_PATHS.vgm2wav || 'vgm2wav', [inputPath, wavPath])
+    await runCommand(TOOL_PATHS.ffmpeg || 'ffmpeg', ['-y', '-i', wavPath, '-c:a', 'aac', '-b:a', AUDIO_BITRATE, '-movflags', '+faststart', outputFilePath])
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true })
+  }
+}
+
+async function convertSpcBufferToM4A(buffer, outputFilePath) {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'manifest-spc-'))
+  const inputPath = path.join(tempDir, 'track.spc')
+  const wavPath = path.join(tempDir, 'track.wav')
+  try {
+    fs.writeFileSync(inputPath, buffer)
+    await runCommand(TOOL_PATHS.spc2wav || 'spc2wav', [inputPath, wavPath])
+    await runCommand(TOOL_PATHS.ffmpeg || 'ffmpeg', ['-y', '-i', wavPath, '-c:a', 'aac', '-b:a', AUDIO_BITRATE, '-movflags', '+faststart', outputFilePath])
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true })
+  }
 }
 
 function createTextOverlaySvg(gameInfo) {
@@ -191,7 +288,7 @@ async function parseVGMTitle(buffer) {
   // VGM file header parsing for GD3 tag
   // Reference: https://vgmrips.net/wiki/VGM_Specification
   try {
-    const view = new DataView(buffer.buffer)
+    const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength)
 
     // Check VGM magic number "Vgm "
     const magic = String.fromCharCode(
@@ -249,13 +346,16 @@ async function parseVGMTitle(buffer) {
 async function processZipFile(zipPath, gameId) {
   const data = fs.readFileSync(zipPath)
   const zip = await JSZip.loadAsync(data)
+  const audioDirName = path.basename(zipPath, '.zip')
+  const gameAudioDir = path.join(OUTPUT_DIR, audioDirName)
+  fs.mkdirSync(gameAudioDir, { recursive: true })
 
   const tracks = []
   let gameInfo = null
   let coverImageData = null
   let coverImageExt = null
-  let hasSpecialChars = false
-  const filesToRename = []
+  const usedAudioNames = new Set()
+  let trackIndex = 0
 
   for (const [filename, file] of Object.entries(zip.files)) {
     if (file.dir) continue
@@ -270,13 +370,16 @@ async function processZipFile(zipPath, gameId) {
 
     // Process VGM/VGZ files
     if (lowerName.endsWith('.vgm') || lowerName.endsWith('.vgz')) {
+      trackIndex += 1
       let buffer = await file.async('uint8array')
+      const sourceBuffer = Buffer.from(buffer)
+      const isVgz = lowerName.endsWith('.vgz') || (buffer[0] === 0x1f && buffer[1] === 0x8b)
 
       // If VGZ (gzip compressed), decompress
-      if (lowerName.endsWith('.vgz') || (buffer[0] === 0x1f && buffer[1] === 0x8b)) {
+      if (isVgz) {
         const pako = await import('pako')
         try {
-          buffer = pako.default.inflate(buffer)
+          buffer = pako.default.inflate(sourceBuffer)
         } catch (e) {
           console.log(`  Skipping ${filename}: decompression failed`)
           continue
@@ -285,37 +388,32 @@ async function processZipFile(zipPath, gameId) {
 
       const vgmInfo = await parseVGMTitle(buffer)
 
-      // Check for special characters (non-ASCII)
-      const hasNonAscii = /[^\x00-\x7F]/.test(filename)
-      let sanitizedFilename = filename
-      
-      if (hasNonAscii) {
-        // Normalize special characters with comprehensive replacement
-        sanitizedFilename = filename
-          // Handle common accented characters
-          .replace(/[êéèëē]/gi, 'e')
-          .replace(/[àáâãäåā]/gi, 'a')
-          .replace(/[ìíîïī]/gi, 'i')
-          .replace(/[òóôõöō]/gi, 'o')
-          .replace(/[ùúûüū]/gi, 'u')
-          .replace(/[ñ]/gi, 'n')
-          .replace(/[ç]/gi, 'c')
-          .replace(/[ÿý]/gi, 'y')
-          // NFD normalization
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          // Handle special cases that might have become corrupted
-          .replace(/M[^a-zA-Z\s]*l[^a-zA-Z\s]*e/gi, 'Melee') // Fix Mêlée -> Melee
-          // Remove any remaining non-ASCII
-          .replace(/[^\x00-\x7F]/g, '')
-        
-        hasSpecialChars = true
-        filesToRename.push({ original: filename, sanitized: sanitizedFilename })
-        console.log(`  ⚠ Special chars detected: "${filename}" -> "${sanitizedFilename}"`)
+      const sourceBase = path.basename(filename, path.extname(filename))
+      const prefix = String(trackIndex).padStart(3, '0')
+      let audioBase = `${prefix}_${sanitizeForPath(sourceBase) || 'track'}`
+      let dedupe = 2
+      while (usedAudioNames.has(audioBase.toLowerCase())) {
+        audioBase = `${prefix}_${sanitizeForPath(sourceBase) || 'track'}_${dedupe}`
+        dedupe += 1
+      }
+      usedAudioNames.add(audioBase.toLowerCase())
+      const audioFileName = `${audioBase}.m4a`
+      const audioRelativePath = `${audioDirName}/${audioFileName}`
+      const audioOutputPath = path.join(OUTPUT_DIR, audioRelativePath)
+      const sourceExt = lowerName.endsWith('.vgm') ? 'vgm' : 'vgz'
+
+      if (!fs.existsSync(audioOutputPath)) {
+        console.log(`  -> Converting VGM: ${filename} -> ${audioRelativePath}`)
+        await convertVgmBufferToM4A(sourceBuffer, sourceExt, audioOutputPath)
+        console.log(`  -> Converted: ${audioRelativePath}`)
+      } else {
+        console.log(`  -> Skip existing audio: ${audioRelativePath}`)
       }
 
       tracks.push({
-        filename: sanitizedFilename,
+        filename: audioFileName,
+        audioFile: audioRelativePath,
+        originalFilename: filename,
         name: vgmInfo?.trackNameEn || vgmInfo?.trackNameJp || path.basename(filename, path.extname(filename)),
         nameJp: vgmInfo?.trackNameJp || ''
       })
@@ -330,37 +428,6 @@ async function processZipFile(zipPath, gameId) {
         }
       }
     }
-  }
-
-  // If special characters were found, create a fixed ZIP file
-  if (hasSpecialChars && filesToRename.length > 0) {
-    console.log(`  🔧 Fixing ZIP file with ${filesToRename.length} renamed files...`)
-    
-    const newZip = new JSZip()
-    
-    // Copy all files with corrected names
-    for (const [filename, file] of Object.entries(zip.files)) {
-      if (file.dir) continue
-      
-      const renamed = filesToRename.find(f => f.original === filename)
-      const newName = renamed ? renamed.sanitized : filename
-      
-      const content = await file.async('uint8array')
-      newZip.file(newName, content)
-    }
-    
-    // Generate new ZIP
-    const newZipData = await newZip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' })
-    
-    // Backup original and save fixed version
-    const backupPath = zipPath.replace('.zip', '_backup.zip')
-    if (!fs.existsSync(backupPath)) {
-      fs.copyFileSync(zipPath, backupPath)
-      console.log(`  ✓ Original backed up to: ${path.basename(backupPath)}`)
-    }
-    
-    fs.writeFileSync(zipPath, newZipData)
-    console.log(`  ✓ ZIP file fixed and saved`)
   }
 
   // Save cover image if found
@@ -439,11 +506,16 @@ function parseSPCID666(buffer) {
 async function processSPCZipFile(zipPath, gameId) {
   const data = fs.readFileSync(zipPath)
   const zip = await JSZip.loadAsync(data)
+  const audioDirName = path.basename(zipPath, '.zip')
+  const gameAudioDir = path.join(OUTPUT_DIR, audioDirName)
+  fs.mkdirSync(gameAudioDir, { recursive: true })
 
   const tracks = []
   let gameInfo = null
   let coverImageData = null
   let coverImageExt = null
+  const usedAudioNames = new Set()
+  let trackIndex = 0
 
   for (const [filename, file] of Object.entries(zip.files)) {
     if (file.dir) continue
@@ -458,11 +530,34 @@ async function processSPCZipFile(zipPath, gameId) {
 
     // Process SPC files
     if (lowerName.endsWith('.spc')) {
+      trackIndex += 1
       const buffer = await file.async('uint8array')
       const spcInfo = parseSPCID666(buffer)
+      const sourceBase = path.basename(filename, '.spc')
+      const prefix = String(trackIndex).padStart(3, '0')
+      let audioBase = `${prefix}_${sanitizeForPath(sourceBase) || 'track'}`
+      let dedupe = 2
+      while (usedAudioNames.has(audioBase.toLowerCase())) {
+        audioBase = `${prefix}_${sanitizeForPath(sourceBase) || 'track'}_${dedupe}`
+        dedupe += 1
+      }
+      usedAudioNames.add(audioBase.toLowerCase())
+      const audioFileName = `${audioBase}.m4a`
+      const audioRelativePath = `${audioDirName}/${audioFileName}`
+      const audioOutputPath = path.join(OUTPUT_DIR, audioRelativePath)
+
+      if (!fs.existsSync(audioOutputPath)) {
+        console.log(`  -> Converting SPC: ${filename} -> ${audioRelativePath}`)
+        await convertSpcBufferToM4A(Buffer.from(buffer), audioOutputPath)
+        console.log(`  -> Converted: ${audioRelativePath}`)
+      } else {
+        console.log(`  -> Skip existing audio: ${audioRelativePath}`)
+      }
 
       tracks.push({
-        filename,
+        filename: audioFileName,
+        audioFile: audioRelativePath,
+        originalFilename: filename,
         name: spcInfo?.title || path.basename(filename, '.spc'),
         duration: spcInfo?.duration || 0,
         fade: spcInfo?.fade || 10000
@@ -521,6 +616,9 @@ async function processSPCZipFile(zipPath, gameId) {
 
 async function main() {
   console.log('Scanning dist folder for zip files...')
+  await ensureCommand('vgm2wav', ['-h'])
+  await ensureCommand('spc2wav', ['-h'])
+  await ensureCommand('ffmpeg', ['-version'])
 
   // Ensure output directories exist
   if (!fs.existsSync(OUTPUT_DIR)) {
@@ -552,7 +650,7 @@ async function main() {
       const game = {
         id: gameId,
         format: 'vgm',
-        zipFile: file,
+        audioDir: path.basename(file, '.zip'),
         title: gameInfo?.title || path.basename(file, '.zip'),
         titleJp: gameInfo?.titleJp || '',
         system: gameInfo?.system || 'Unknown',
@@ -565,10 +663,6 @@ async function main() {
 
       manifest.games.push(game)
       console.log(`  -> ${game.title} (${tracks.length} tracks)`)
-
-      // Copy zip file to public/dist
-      const destPath = path.join(OUTPUT_DIR, file)
-      fs.copyFileSync(zipPath, destPath)
 
     } catch (e) {
       console.error(`  Error processing ${file}:`, e.message)
@@ -591,7 +685,7 @@ async function main() {
         const game = {
           id: gameId,
           format: 'spc',
-          zipFile: file,
+          audioDir: path.basename(file, '.zip'),
           title: gameInfo?.title || path.basename(file, '.zip'),
           titleJp: gameInfo?.titleJp || '',
           system: gameInfo?.system || 'Super Nintendo',
@@ -604,10 +698,6 @@ async function main() {
 
         manifest.games.push(game)
         console.log(`  -> ${game.title} (${tracks.length} tracks)`)
-
-        // Copy zip file to public/music
-        const destPath = path.join(OUTPUT_DIR, file)
-        fs.copyFileSync(zipPath, destPath)
 
       } catch (e) {
         console.error(`  Error processing ${file}:`, e.message)

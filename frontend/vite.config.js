@@ -5,6 +5,9 @@ import pkg from './package.json'
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    host: true
+  },
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version)
   },

@@ -127,8 +127,7 @@ export function Player({
           {trackInfo ? (
             <div className="track-info">
               <div className="track-title">{trackInfo.title}</div>
-              {trackInfo.game && <div className="track-game">{trackInfo.game}</div>}
-              {gameSystem && <div className="track-system">{gameSystem}</div>}
+              {gameSystem && gameSystem !== 'Unknown' && <div className="track-system">{gameSystem}</div>}
               {gameAuthor && <div className="track-author">{gameAuthor}</div>}
               <div className="track-time">
                 <span className="time-elapsed">{formatTime(elapsed)}</span>

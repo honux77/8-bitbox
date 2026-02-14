@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-manifest": "node scripts/generate-manifest.js"
+    "generate-manifest": "node scripts/generate-manifest.js",
+    "convert-vgz": "node scripts/convert-vgz-to-web-audio.js"
   },
   "dependencies": {
     "react": "^19.2.0",
