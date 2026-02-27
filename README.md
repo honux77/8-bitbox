@@ -77,7 +77,6 @@ https://9-player.vercel.app/?game=GameID&track=TrackName
 ### Development
 
 ```bash
-cd frontend
 npm install
 npm run dev
 ```
@@ -87,14 +86,12 @@ npm run dev
 음악 파일(VGZ/SPC ZIP)에서 메타데이터를 추출하고 OG 이미지를 생성합니다.
 
 ```bash
-cd frontend
 npm run generate-manifest
 ```
 
 ### Build
 
 ```bash
-cd frontend
 npm run build
 ```
 

@@ -9,8 +9,8 @@ import { spawn } from 'child_process'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const DIST_DIR = path.join(__dirname, '../../music-source/vgz')
-const SPC_DIR = path.join(__dirname, '../../music-source/spc')
+const DIST_DIR = path.join(__dirname, '../music-source/vgz')
+const SPC_DIR = path.join(__dirname, '../music-source/spc')
 const OUTPUT_DIR = path.join(__dirname, '../public/music')
 const COVERS_DIR = path.join(OUTPUT_DIR, 'covers')
 const OG_COVERS_DIR = path.join(OUTPUT_DIR, 'og-covers')
