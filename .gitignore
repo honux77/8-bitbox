@@ -1,16 +1,16 @@
 # Music assets (deployed via Cloudflare Pages, not git)
-frontend/public/music/**/*.m4a
-frontend/public/music/**/*.zip
-frontend/public/music/covers/
-frontend/public/music/og-covers/
-frontend/public/music/manifest.json
+public/music/**/*.m4a
+public/music/**/*.zip
+public/music/covers/
+public/music/og-covers/
+public/music/manifest.json
 
 # VGM/SPC source archives
 vgz/
 spc/
 
 # Build outputs
-frontend/dist/
+dist/
 
 # Dependencies
 node_modules/

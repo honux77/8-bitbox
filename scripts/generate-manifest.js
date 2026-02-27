@@ -15,8 +15,6 @@ const OUTPUT_DIR = path.join(__dirname, '../public/music')
 const COVERS_DIR = path.join(OUTPUT_DIR, 'covers')
 const OG_COVERS_DIR = path.join(OUTPUT_DIR, 'og-covers')
 const MANIFEST_PATH = path.join(OUTPUT_DIR, 'manifest.json')
-const AUDIO_BITRATE = '192k'
-const TOOL_PATHS = {}
 
 // OG image dimensions (Facebook/Twitter recommended)
 const OG_WIDTH = 1200
@@ -76,65 +74,13 @@ function runCommand(cmd, args) {
   })
 }
 
-function resolveCommand(command, extraCandidates = []) {
-  const candidates = [command, ...extraCandidates]
-
-  const pathDirs = (process.env.PATH || '')
-    .split(path.delimiter)
-    .filter(Boolean)
-
-  for (const candidate of candidates) {
-    if (!candidate) continue
-    if (candidate.includes('/') && fs.existsSync(candidate)) {
-      return candidate
-    }
-    for (const dir of pathDirs) {
-      const fullPath = path.join(dir, candidate)
-      if (fs.existsSync(fullPath)) {
-        return fullPath
-      }
-    }
-  }
-
-  return null
-}
-
-async function ensureCommand(command, args = ['-h']) {
-  if (TOOL_PATHS[command]) return TOOL_PATHS[command]
-
-  const resolved = resolveCommand(command, [
-    `/opt/homebrew/bin/${command}`,
-    `/usr/local/bin/${command}`
-  ])
-  if (!resolved) {
-    throw new Error(`Required command not found: ${command}`)
-  }
-
-  TOOL_PATHS[command] = resolved
-  return resolved
-}
-
-async function convertVgmBufferToM4A(buffer, extension, outputFilePath) {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'manifest-vgm-'))
+async function convertToM4A(buffer, extension, outputFilePath, force = false) {
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'manifest-'))
   const inputPath = path.join(tempDir, `track.${extension}`)
-  const wavPath = path.join(tempDir, 'track.wav')
   try {
     fs.writeFileSync(inputPath, buffer)
-    await runCommand(TOOL_PATHS.vgm2wav || 'vgm2wav', [inputPath, wavPath])
-    await runCommand(TOOL_PATHS.ffmpeg || 'ffmpeg', ['-y', '-i', wavPath, '-c:a', 'aac', '-b:a', AUDIO_BITRATE, '-movflags', '+faststart', outputFilePath])
-  } finally {
-    fs.rmSync(tempDir, { recursive: true, force: true })
-  }
-}
-
-async function convertSpcBufferToM4A(buffer, outputFilePath) {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'manifest-spc-'))
-  const inputPath = path.join(tempDir, 'track.spc')
-  const wavPath = path.join(tempDir, 'track.wav')
-  try {
-    fs.writeFileSync(inputPath, buffer)
-    await runCommand(TOOL_PATHS.spc2wav || 'spc2wav', [inputPath, wavPath])
-    await runCommand(TOOL_PATHS.ffmpeg || 'ffmpeg', ['-y', '-i', wavPath, '-c:a', 'aac', '-b:a', AUDIO_BITRATE, '-movflags', '+faststart', outputFilePath])
+    const args = ['--format', 'aac', ...(force ? [] : ['--skip']), inputPath, outputFilePath]
+    await runCommand('vgm2wav2', args)
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true })
   }
@@ -343,7 +289,7 @@ async function parseVGMTitle(buffer) {
   }
 }
 
-async function processZipFile(zipPath, gameId) {
+async function processZipFile(zipPath, gameId, force = false) {
   const data = fs.readFileSync(zipPath)
   const zip = await JSZip.loadAsync(data)
   const audioDirName = path.basename(zipPath, '.zip')
@@ -402,13 +348,8 @@ async function processZipFile(zipPath, gameId) {
       const audioOutputPath = path.join(OUTPUT_DIR, audioRelativePath)
       const sourceExt = lowerName.endsWith('.vgm') ? 'vgm' : 'vgz'
 
-      if (!fs.existsSync(audioOutputPath)) {
-        console.log(`  -> Converting VGM: ${filename} -> ${audioRelativePath}`)
-        await convertVgmBufferToM4A(sourceBuffer, sourceExt, audioOutputPath)
-        console.log(`  -> Converted: ${audioRelativePath}`)
-      } else {
-        console.log(`  -> Skip existing audio: ${audioRelativePath}`)
-      }
+      console.log(`  -> Converting: ${filename} -> ${audioRelativePath}`)
+      await convertToM4A(sourceBuffer, sourceExt, audioOutputPath, force)
 
       tracks.push({
         filename: audioFileName,
@@ -503,7 +444,7 @@ function parseSPCID666(buffer) {
   }
 }
 
-async function processSPCZipFile(zipPath, gameId) {
+async function processSPCZipFile(zipPath, gameId, force = false) {
   const data = fs.readFileSync(zipPath)
   const zip = await JSZip.loadAsync(data)
   const audioDirName = path.basename(zipPath, '.zip')
@@ -546,13 +487,8 @@ async function processSPCZipFile(zipPath, gameId) {
       const audioRelativePath = `${audioDirName}/${audioFileName}`
       const audioOutputPath = path.join(OUTPUT_DIR, audioRelativePath)
 
-      if (!fs.existsSync(audioOutputPath)) {
-        console.log(`  -> Converting SPC: ${filename} -> ${audioRelativePath}`)
-        await convertSpcBufferToM4A(Buffer.from(buffer), audioOutputPath)
-        console.log(`  -> Converted: ${audioRelativePath}`)
-      } else {
-        console.log(`  -> Skip existing audio: ${audioRelativePath}`)
-      }
+      console.log(`  -> Converting: ${filename} -> ${audioRelativePath}`)
+      await convertToM4A(Buffer.from(buffer), 'spc', audioOutputPath, force)
 
       tracks.push({
         filename: audioFileName,
@@ -616,9 +552,8 @@ async function processSPCZipFile(zipPath, gameId) {
 
 async function main() {
   console.log('Scanning dist folder for zip files...')
-  await ensureCommand('vgm2wav', ['-h'])
-  await ensureCommand('spc2wav', ['-h'])
-  await ensureCommand('ffmpeg', ['-version'])
+  const found = (process.env.PATH || '').split(path.delimiter).some(dir => fs.existsSync(path.join(dir, 'vgm2wav2')))
+  if (!found) throw new Error('Required command not found: vgm2wav2')
 
   // Ensure output directories exist
   if (!fs.existsSync(OUTPUT_DIR)) {
@@ -631,7 +566,10 @@ async function main() {
     fs.mkdirSync(OG_COVERS_DIR, { recursive: true })
   }
 
-  const targetFile = process.argv[2] // Optional single file to process
+  const args = process.argv.slice(2)
+  const force = args.includes('--force')
+  const targetFile = args.find(a => !a.startsWith('--'))
+  console.log(`Mode: ${force ? 'force overwrite' : 'skip existing'}`)
 
   const files = fs.readdirSync(DIST_DIR).filter(f => {
     if (!f.endsWith('.zip') || f.includes('_backup')) return false
@@ -651,7 +589,7 @@ async function main() {
     const gameId = path.basename(file, '.zip').replace(/[^a-zA-Z0-9]/g, '_')
 
     try {
-      const { gameInfo, tracks, coverImage, ogImage } = await processZipFile(zipPath, gameId)
+      const { gameInfo, tracks, coverImage, ogImage } = await processZipFile(zipPath, gameId, force)
 
       const game = {
         id: gameId,
@@ -690,7 +628,7 @@ async function main() {
       const gameId = path.basename(file, '.zip').replace(/[^a-zA-Z0-9]/g, '_')
 
       try {
-        const { gameInfo, tracks, coverImage, ogImage } = await processSPCZipFile(zipPath, gameId)
+        const { gameInfo, tracks, coverImage, ogImage } = await processSPCZipFile(zipPath, gameId, force)
 
         const game = {
           id: gameId,
