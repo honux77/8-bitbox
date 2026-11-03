@@ -11,7 +11,6 @@
     "generate-manifest": "node scripts/generate-manifest.js",
     "generate-spectrum": "node scripts/generate-spectrum.js",
     "generate-og": "node scripts/generate-og.js",
-    "convert-vgz": "node scripts/convert-vgz-to-web-audio.js",
     "deploy": "vite build && npx wrangler pages deploy dist --project-name 8-bitbox --commit-dirty=true"
   },
   "dependencies": {

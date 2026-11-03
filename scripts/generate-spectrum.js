@@ -54,7 +54,12 @@ function decodeToMonoFloat(inputPath) {
     child.stderr.on('data', (d) => { stderr += d.toString() })
     child.on('error', reject)
     child.on('close', (code) => {
-      if (code !== 0) return reject(new Error(`ffmpeg failed (${code}): ${stderr}`))
+      if (code !== 0) {
+        // A corrupt stream makes ffmpeg log one line per bad packet; keep it short
+        const lines = stderr.trim().split('\n').filter(Boolean)
+        const more = lines.length > 1 ? ` (+${lines.length - 1} more ffmpeg errors, file may be corrupt)` : ''
+        return reject(new Error(`ffmpeg failed (${code}): ${lines[0] || 'unknown error'}${more}`))
+      }
       const buf = Buffer.concat(chunks)
       const aligned = new Float32Array(buf.length >> 2)
       for (let i = 0; i < aligned.length; i++) aligned[i] = buf.readFloatLE(i * 4)
