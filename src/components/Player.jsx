@@ -24,7 +24,7 @@ export function Player({
   onStop,
   onSelectTrack,
   onSeek,
-  frequencyData,
+  readSpectrum,
   repeatMode,
   onToggleRepeat,
   shuffle,
@@ -68,31 +68,40 @@ export function Player({
     })
   }
 
-  // Draw frequency spectrum on canvas when frequencyData updates
+  // Draw the spectrum in our own animation loop so the 60fps updates don't
+  // re-render React. Skip drawing while everything is flat and already drawn.
   useEffect(() => {
-    if (!frequencyData) return
-
-    const drawSpectrum = (canvas) => {
+    if (!readSpectrum) return
+    let raf = 0
+    let drewFlat = false
+    const drawSpectrum = (canvas, levels) => {
       if (!canvas) return
       const ctx = canvas.getContext('2d')
       const w = canvas.width
       const h = canvas.height
       ctx.clearRect(0, 0, w, h)
-      const bars = frequencyData.length
+      const bars = levels.length
       const barW = w / bars
+      ctx.fillStyle = '#00e5ff'
       for (let i = 0; i < bars; i++) {
-        const v = frequencyData[i] ?? 0
-        const barH = (v / 255) * (h - 4)
-        const x = i * barW
-        const y = h - barH
-        ctx.fillStyle = '#00e5ff'
-        ctx.fillRect(x + 2, y, barW - 4, barH)
+        const barH = (levels[i] / 255) * (h - 4)
+        if (barH <= 0) continue
+        ctx.fillRect(i * barW + 2, h - barH, barW - 4, barH)
       }
     }
-
-    drawSpectrum(canvasRef.current)
-    drawSpectrum(overlayCanvasRef.current)
-  }, [frequencyData])
+    const tick = () => {
+      const levels = readSpectrum()
+      const flat = levels.every(v => v <= 0)
+      if (!flat || !drewFlat) {
+        drawSpectrum(canvasRef.current, levels)
+        drawSpectrum(overlayCanvasRef.current, levels)
+      }
+      drewFlat = flat
+      raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [readSpectrum, isImageExpanded])
 
   return (
     <div className="player-container">

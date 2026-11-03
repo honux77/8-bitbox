@@ -480,7 +480,7 @@ function App() {
               onToggleShuffle={player.toggleShuffle}
               volume={player.volume}
               onVolumeChange={player.setVolume}
-              frequencyData={player.frequencyData}
+              readSpectrum={player.readSpectrum}
             />
           </>
         )}

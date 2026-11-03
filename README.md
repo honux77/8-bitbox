@@ -9,7 +9,7 @@
 ## Features
 
 - **Multi-Format Playback** - VGM/VGZ (Mega Drive, MSX 등) 및 SPC (Super Nintendo) 재생 지원
-- **Real-time Audio Visualization** - 주파수 스펙트럼 시각화
+- **Audio Visualization** - 미리 분석한 주파수 스펙트럼을 재생 위치에 맞춰 표시 (백그라운드 재생 유지)
 - **Cover Art Display** - 앨범 커버 이미지 확대 보기 (CRT 스캔라인 이펙트)
 - **Responsive Design** - 데스크탑/모바일 반응형 지원
 - **Auto-play** - 트랙 자동 재생 및 다음 곡 넘기기
@@ -87,6 +87,13 @@ npm run dev
 
 ```bash
 npm run generate-manifest
+```
+
+변환된 트랙마다 시각화용 스펙트럼 파일(`.spec`, 16밴드 × 30fps)도 함께 생성됩니다. 이미 있는 m4a에 대해서만 다시 만들려면 다음을 실행합니다 (ffmpeg 필요).
+
+```bash
+npm run generate-spectrum            # 없는 것만 생성
+npm run generate-spectrum -- --force # 전부 재생성
 ```
 
 ### Build

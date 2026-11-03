@@ -1,5 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+const SPEC_BANDS = 16
+const SPEC_RANGE_DB = 36 // must match DYNAMIC_RANGE_DB in generate-spectrum.js
+const SPEC_FALL_PER_SEC = 400
+
+function parseSpec(buf) {
+  if (buf.byteLength < 12) return null
+  const view = new DataView(buf)
+  const magic = String.fromCharCode(view.getUint8(0), view.getUint8(1), view.getUint8(2), view.getUint8(3))
+  if (magic !== 'SPEC' || view.getUint8(4) !== 1) return null
+  const bands = view.getUint8(5)
+  const fps = view.getUint16(6, true)
+  const frames = view.getUint32(8, true)
+  if (!bands || !fps || !frames || buf.byteLength < 12 + bands * frames) return null
+  return { bands, fps, frames, data: new Uint8Array(buf, 12, bands * frames) }
+}
+
 export function useM4APlayer() {
   const [isReady] = useState(true)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -7,58 +23,71 @@ export function useM4APlayer() {
   const [trackList, setTrackList] = useState([])
   const [trackInfo, setTrackInfo] = useState(null)
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
-  const [frequencyData, setFrequencyData] = useState(new Array(16).fill(0))
   const [elapsed, setElapsed] = useState(0)
   const [repeatMode, setRepeatMode] = useState('all') // 'off' | 'all' | 'one'
   const [shuffle, setShuffle] = useState(false)
   const [volume, setVolumeState] = useState(0.8)
 
   const audioRef = useRef(null)
-  const rafRef = useRef(null)
   const nextTrackRef = useRef(null)
   const repeatModeRef = useRef('all')
   const shuffleRef = useRef(false)
   const volumeRef = useRef(0.8)
   const selectedGameRef = useRef(null)
-  const binsRef = useRef(new Array(16).fill(0))
+  const specRef = useRef(null)
+  const levelsRef = useRef(new Float32Array(SPEC_BANDS))
+  const lastReadRef = useRef(0)
 
-  // Synthetic frequency visualization (no Web Audio API dependency)
-  useEffect(() => {
-    if (!isPlaying) {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-        rafRef.current = null
-      }
-      // Decay to zero
-      binsRef.current = new Array(16).fill(0)
-      setFrequencyData(new Array(16).fill(0))
-      return
-    }
+  // Visualizer: precomputed spectrum (.spec, see scripts/generate-spectrum.js)
+  // played back in sync with audio.currentTime. A live AnalyserNode would need
+  // Web Audio, which stops background playback on mobile.
+  const readSpectrum = useCallback(() => {
+    const out = levelsRef.current
+    const now = performance.now()
+    const dt = Math.min(0.1, (now - lastReadRef.current) / 1000)
+    lastReadRef.current = now
 
-    const tick = () => {
-      const bins = binsRef.current
-      const next = []
-      for (let i = 0; i < 16; i++) {
-        // Generate target value with musical-looking distribution
-        // (lower frequencies stronger, higher ones weaker)
-        const base = Math.max(0, 180 - i * 8)
-        const target = base + Math.random() * 80 - 40
-        // Smooth towards target (fast attack, slow decay)
-        if (target > bins[i]) {
-          next[i] = Math.min(255, bins[i] + (target - bins[i]) * 0.4)
-        } else {
-          next[i] = Math.max(0, bins[i] - (bins[i] - target) * 0.15)
-        }
+    const audio = audioRef.current
+    const spec = specRef.current
+    const active = audio && spec && spec.audio === audio &&
+      !audio.paused && !audio.ended && !audio.seeking && audio.readyState >= 3
+    const gain = volumeRef.current
+    // Shift by the volume in dB so bars follow the volume slider
+    const offset = gain > 0 ? (255 / SPEC_RANGE_DB) * 20 * Math.log10(gain) : -Infinity
+
+    let pos = 0, i0 = 0, i1 = 0, frac = 0
+    if (active) {
+      pos = audio.currentTime * spec.fps
+      i0 = Math.min(spec.frames - 1, Math.floor(pos))
+      i1 = Math.min(spec.frames - 1, i0 + 1)
+      frac = pos - Math.floor(pos)
+    }
+    const fall = SPEC_FALL_PER_SEC * dt
+    for (let b = 0; b < out.length; b++) {
+      let target = 0
+      if (active && b < spec.bands && i0 >= 0) {
+        const a = spec.data[i0 * spec.bands + b]
+        const c = spec.data[i1 * spec.bands + b]
+        target = Math.max(0, a + (c - a) * frac + offset)
       }
-      binsRef.current = next
-      setFrequencyData(next.map(v => Math.round(v)))
-      rafRef.current = requestAnimationFrame(tick)
+      // Instant attack, gravity-style decay
+      out[b] = target >= out[b] ? target : Math.max(target, out[b] - fall)
     }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    }
-  }, [isPlaying])
+    return out
+  }, [])
+
+  const loadSpectrum = useCallback((audio, trackPath) => {
+    specRef.current = null
+    const url = `/music/${trackPath.replace(/\.[^./]+$/, '')}.spec`
+    fetch(url)
+      .then(res => (res.ok ? res.arrayBuffer() : null))
+      .then(buf => {
+        if (!buf || audioRef.current !== audio) return
+        const spec = parseSpec(buf)
+        if (spec) specRef.current = { ...spec, audio }
+      })
+      .catch(() => {})
+  }, [])
 
   const formatDuration = useCallback((sec) => {
     const s = Math.floor(sec)
@@ -153,6 +182,7 @@ export function useM4APlayer() {
     }
 
     audioRef.current = audio
+    loadSpectrum(audio, track.path)
 
     const game = selectedGameRef.current
     setTrackInfo({
@@ -172,7 +202,7 @@ export function useM4APlayer() {
       console.error('Playback failed:', e)
       setIsPlaying(false)
     })
-  }, [trackList, currentTrackIndex])
+  }, [trackList, currentTrackIndex, loadSpectrum])
 
   const seek = useCallback((time) => {
     if (audioRef.current) {
@@ -326,7 +356,7 @@ export function useM4APlayer() {
     currentTrackIndex,
     trackList,
     trackInfo,
-    frequencyData,
+    readSpectrum,
     elapsed,
     loadGame,
     play,

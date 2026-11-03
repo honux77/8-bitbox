@@ -1,6 +1,7 @@
 # Music assets (deployed via Cloudflare Pages, not git)
 public/music/**/*.m4a
 public/music/**/*.zip
+public/music/**/*.spec
 public/music/covers/
 public/music/og-covers/
 public/music/manifest.json

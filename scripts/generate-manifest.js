@@ -5,6 +5,7 @@ import JSZip from 'jszip'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { spawn } from 'child_process'
+import { generateSpectrum } from './generate-spectrum.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -83,6 +84,16 @@ async function convertToM4A(buffer, extension, outputFilePath, force = false) {
     await runCommand('vgm2wav2', args)
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true })
+  }
+}
+
+// Precomputed spectrum for the visualizer (see generate-spectrum.js)
+async function writeSpectrum(audioOutputPath, audioRelativePath, force) {
+  try {
+    const r = await generateSpectrum(audioOutputPath, { force })
+    if (!r.skipped) console.log(`  [SPEC] ${audioRelativePath}`)
+  } catch (e) {
+    console.log(`  [SPEC FAIL] ${audioRelativePath}: ${e.message}`)
   }
 }
 
@@ -355,6 +366,7 @@ async function processZipFile(zipPath, gameId, force = false) {
         console.log(`  [CONVERT] ${filename} -> ${audioRelativePath}`)
       }
       await convertToM4A(sourceBuffer, sourceExt, audioOutputPath, force)
+      await writeSpectrum(audioOutputPath, audioRelativePath, force)
 
       tracks.push({
         filename: audioFileName,
@@ -499,6 +511,7 @@ async function processSPCZipFile(zipPath, gameId, force = false) {
         console.log(`  [CONVERT] ${filename} -> ${audioRelativePath}`)
       }
       await convertToM4A(Buffer.from(buffer), 'spc', audioOutputPath, force)
+      await writeSpectrum(audioOutputPath, audioRelativePath, force)
 
       tracks.push({
         filename: audioFileName,
